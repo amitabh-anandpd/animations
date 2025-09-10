@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinium Techfest</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb { background: #4a4a4a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6a6a6a; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+
+        .glass-nav {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border-radius: 50px;
+            padding: 15px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-item {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: height 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .nav-item.active {
+            height: 150px;
+        }
+
+        .nav-icon {
+            stroke: #ffffff;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 5;
+            flex-shrink: 0;
+        }
+        
+        .active .nav-icon {
+            transform: translateY(-50px);
+        }
+        
+        .nav-text {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.2s;
+            position: absolute;
+            bottom: 20px;
+            z-index: 5;
+        }
+        .active .nav-text {
+            opacity: 1;
+        }
+        
+        .liquid-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(45deg, #00f2fe, #ee00ff);
+            z-index: 2;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .liquid-fill::before,
+        .liquid-fill::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            left: -50%;
+            top: 0;
+            background: #121212;
+        }
+        .liquid-fill::before {
+            border-radius: 45%;
+            top: -190%;
+            animation: wave 8s linear infinite;
+        }
+        .liquid-fill::after {
+            border-radius: 40%;
+            top: -192%;
+            animation: wave 10s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #liquid-droplet {
+            position: absolute;
+            left: 11px;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #00f2fe, #ee00ff);
+            z-index: 99;
+            opacity: 0;
+            transform: scale(0);
+            transition: top 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.2s, transform 0.2s;
+            overflow: hidden;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        }
+        #liquid-droplet::before, #liquid-droplet::after {
+            content:'';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            left: -50%;
+            background: #121212;
+        }
+        #liquid-droplet::before {
+            border-radius: 45%;
+            top: -190%;
+            animation: wave 8s linear infinite;
+        }
+        #liquid-droplet::after {
+            border-radius: 40%;
+            top: -192%;
+            animation: wave 10s linear infinite;
+        }
+
+        #logo-container {
+            width: 50px;
+            height: 50px;
+            z-index: 5;
+        }
+        #infinity-logo {
+            width: 32px;
+            height: 32px;
+            z-index: 5;
+            position: absolute;
+        }
+    </style>
+</head>
+<body class="bg-gray-900">
+
+    <nav class="glass-nav">
+        <!-- The single liquid droplet that travels -->
+        <div id="liquid-droplet"></div>
+
+        <div id="logo-container" class="nav-item">
+            <div class="liquid-fill"></div>
+            <svg id="infinity-logo" viewBox="0 0 250 125" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M187.5 62.5C187.5 91.5214 160.421 112.5 125 112.5C89.5786 112.5 62.5 91.5214 62.5 62.5C62.5 33.4786 89.5786 12.5 125 12.5C160.421 12.5 187.5 33.4786 187.5 62.5ZM125 87.5C138.807 87.5 150 76.3071 150 62.5C150 48.6929 138.807 37.5 125 37.5C111.193 37.5 100 48.6929 100 62.5C100 76.3071 111.193 87.5 125 87.5Z M125 62.5C125 91.5214 97.9214 112.5 62.5 112.5C27.0786 112.5 0 91.5214 0 62.5C0 33.4786 27.0786 12.5 62.5 12.5C97.9214 12.5 125 33.4786 125 62.5ZM62.5 87.5C76.3071 87.5 87.5 76.3071 87.5 62.5C87.5 48.6929 76.3071 37.5 62.5 37.5C48.6929 37.5 37.5 48.6929 37.5 62.5C37.5 76.3071 48.6929 87.5 62.5 87.5Z" stroke="white" stroke-width="10"/>
+            </svg>
+        </div>
+        
+        <div class="nav-item" data-section="home">
+            <div class="liquid-fill"></div>
+            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="nav-text">HOME</span>
+        </div>
+        <div class="nav-item" data-section="events">
+            <div class="liquid-fill"></div>
+            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 18L16 14L12 10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 14H16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="nav-text">EVENTS</span>
+        </div>
+        <div class="nav-item" data-section="sponsors">
+            <div class="liquid-fill"></div>
+            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="nav-text">SPONSORS</span>
+        </div>
+        <div class="nav-item" data-section="contact">
+            <div class="liquid-fill"></div>
+            <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 6L12 13L2 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="nav-text">CONTACT</span>
+        </div>
+    </nav>
+    
+    <main class="pr-24">
+        <section id="home" class="h-screen flex items-center justify-center flex-col">
+            <h1 class="text-6xl md:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-fuchsia-500">INFINIUM</h1>
+            <p class="text-xl text-gray-400 mt-4">The Tech Fest of IIIT Hyderabad</p>
+        </section>
+        <section id="events" class="h-screen flex items-center justify-center">
+            <h1 class="text-5xl font-bold">EVENTS</h1>
+        </section>
+        <section id="sponsors" class="h-screen flex items-center justify-center"> <h1 class="text-5xl font-bold">SPONSORS</h1> </section>
+        <section id="contact" class="h-screen flex items-center justify-center"> <h1 class="text-5xl font-bold">CONTACT</h1> </section>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const sections = document.querySelectorAll('section');
+        const navItems = document.querySelectorAll('.nav-item');
+        const droplet = document.getElementById('liquid-droplet');
+        const logoContainer = document.getElementById('logo-container');
+        let currentActive = logoContainer;
+        let isAnimating = false;
+
+        function animateTransition(from, to) {
+            if (isAnimating || !from || !to || from === to) return;
+            isAnimating = true;
+
+            const fromLiquid = from.querySelector('.liquid-fill');
+            const toLiquid = to.querySelector('.liquid-fill');
+            const startPos = from.offsetTop;
+
+            from.classList.remove('active');
+            if (fromLiquid) fromLiquid.style.height = '0%';
+
+            setTimeout(() => {
+                const endPos = to.offsetTop;
+
+                droplet.style.transition = 'none';
+                droplet.style.top = `${startPos}px`;
+                droplet.style.opacity = '1';
+                // droplet.style.transform = 'scale(1)';
+                droplet.style.transform = 'scale(0.4, 1.4)';
+
+                // droplet.offsetHeight;
+
+                // droplet.style.transition = 'top 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.2s 0.3s, transform 0.2s 0.3s';
+                // droplet.style.top = `${endPos}px`;
+                requestAnimationFrame(() => {
+                    droplet.style.transition =
+                        'top 0.18s cubic-bezier(0.3, 1, 0.6, 1), transform 0.3s ease-out, opacity 0.15s';
+                    droplet.style.top = `${endPos}px`;
+                    droplet.style.transform = 'scale(1,1)';
+                });
+
+                setTimeout(() => {
+                    droplet.style.opacity = '0';
+                    droplet.style.transform = 'scale(0)';
+                    
+                    if (toLiquid) toLiquid.style.height = '95%';
+                    to.classList.add('active'); 
+
+                    currentActive = to;
+                    isAnimating = false;
+                }, 225);
+            }, 200);
+        }
+        
+        logoContainer.querySelector('.liquid-fill').style.height = '95%';
+
+        const observer = new IntersectionObserver((entries) => {
+            const visibleEntry = entries.find(entry => entry.isIntersecting);
+            if (visibleEntry && !isAnimating) {
+                const sectionId = visibleEntry.target.id;
+                const newActive = document.querySelector(`.nav-item[data-section="${sectionId}"]`);
+                if (newActive && newActive !== currentActive) {
+                    animateTransition(currentActive, newActive);
+                }
+            }
+        }, { threshold: 0.6 });
+
+        sections.forEach(section => observer.observe(section));
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (isAnimating || currentActive === item) return;
+
+                const sectionId = item.dataset.section;
+
+                if(sectionId) {
+                    animateTransition(currentActive, item); 
+                    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    animateTransition(currentActive, logoContainer);
+                    document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
