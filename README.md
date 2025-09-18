@@ -86,4 +86,8 @@
     <td><img width="300" src="/stickers/s9.png"/></td>
     <td><img width="300" src="/stickers/s10.png"/></td>
   </tr>
+  <tr>
+    <td><img width="300" src="/stickers/s11.png"/></td>
+    <td><img width="300" src="/stickers/s12.png"/></td>
+  </tr>
 </table>
