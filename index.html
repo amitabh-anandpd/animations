@@ -2,35 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>The Shattered Crown — Timeline</title>
+  <title>The Shattered Crown — Historical Database & Timeline</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
 
     :root {
-      --bg-color: #f9f9fb;
-      --text-color: #111;
-      --accent-color: #2b2b80;
+      --bg-color: #fdfaf4;
+      --text-color: #1a1a1a;
+      --accent-color: #8a6a28;
       --muted-color: #555;
-      --table-bg: #fff;
-      --table-stripe: #f4f4ff;
-      --header-bg: #2b2b80;
-      --header-text: #fff;
+      --table-bg: #fffdf7;
+      --table-stripe: #f8f3e8;
+      --header-bg: #c4a75a;
+      --header-text: #2b2100;
       --shadow: 0 2px 10px rgba(0,0,0,0.1);
-      --hover-bg: rgba(43,43,128,0.07);
+      --hover-bg: rgba(138,106,40,0.08);
     }
 
     [data-theme="dark"] {
-      --bg-color: #11131a;
-      --text-color: #e8e8e8;
-      --accent-color: #9ea5ff;
-      --muted-color: #aaa;
-      --table-bg: #181a23;
-      --table-stripe: #1f212d;
-      --header-bg: #24265a;
-      --header-text: #fff;
+      --bg-color: #1b1710;
+      --text-color: #f3e8c8;
+      --accent-color: #d8b859;
+      --muted-color: #c1a969;
+      --table-bg: #221e15;
+      --table-stripe: #2a251a;
+      --header-bg: #8b732f;
+      --header-text: #fff5d3;
       --shadow: 0 2px 10px rgba(0,0,0,0.6);
-      --hover-bg: rgba(255,255,255,0.05);
+      --hover-bg: rgba(255,232,160,0.07);
     }
 
     body {
@@ -39,14 +39,35 @@
       color: var(--text-color);
       padding: 40px 20px;
       transition: background 0.3s ease, color 0.3s ease;
+      background-image: radial-gradient(circle at 50% 20%, rgba(255,230,170,0.05), transparent 70%),
+                        radial-gradient(circle at 0% 100%, rgba(255,240,180,0.07), transparent 70%);
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
       text-align: center;
       margin-bottom: 6px;
-      font-size: 2.2em;
+      font-size: 2.4em;
       letter-spacing: 0.4px;
+      color: var(--accent-color);
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      margin-top: 60px;
+      margin-bottom: 12px;
+      color: var(--accent-color);
+      border-left: 4px solid var(--accent-color);
+      padding-left: 12px;
+      font-size: 1.7em;
+    }
+
+    h3 {
+      font-family: 'Playfair Display', serif;
+      margin-top: 30px;
+      margin-bottom: 8px;
+      color: var(--accent-color);
+      font-size: 1.3em;
     }
 
     p.lead {
@@ -67,16 +88,19 @@
       background: var(--header-bg);
       color: var(--header-text);
       border: none;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
-      transition: background 0.3s ease, transform 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
     .toggle-btn:hover {
       transform: scale(1.03);
       background: var(--accent-color);
+      box-shadow: 0 0 10px rgba(255, 224, 130, 0.6);
     }
 
     table {
@@ -86,6 +110,7 @@
       box-shadow: var(--shadow);
       border-radius: 10px;
       overflow: hidden;
+      margin-bottom: 40px;
       transition: background 0.3s ease;
     }
 
@@ -95,7 +120,7 @@
       padding: 14px 16px;
       text-align: left;
       font-size: 15px;
-      border-bottom: 2px solid rgba(255,255,255,0.1);
+      border-bottom: 2px solid rgba(0,0,0,0.1);
       letter-spacing: 0.3px;
     }
 
@@ -123,11 +148,10 @@
     .event {
       width: 210px;
       font-weight: 600;
-      color: var(--text-color);
     }
 
     .entities {
-      color: #2a8b68;
+      color: #7a5;
       font-style: italic;
       font-size: 0.93em;
       margin-top: 6px;
@@ -136,7 +160,24 @@
     }
 
     [data-theme="dark"] .entities {
-      color: #6fffd7;
+      color: #d7b75e;
+    }
+
+    /* Section decorations */
+    section {
+      position: relative;
+      margin-top: 40px;
+    }
+
+    section::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+      opacity: 0.4;
     }
 
     @media (max-width: 700px) {
@@ -154,7 +195,7 @@
       animation: fadeInUp 0.5s ease forwards;
     }
 
-    tbody tr:nth-child(n) { animation-delay: calc(0.05s * var(--i)); }
+    tbody tr:nth-child(n) { animation-delay: calc(0.04s * var(--i)); }
 
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(10px); }
@@ -163,112 +204,203 @@
   </style>
 </head>
 <body>
-  <h1>The Shattered Crown: Revolution of Avalon — Timeline</h1>
-  <p class="lead">Key events and their significance (with links to database entities)</p>
+  <h1>The Shattered Crown: Revolution of Avalon — Database & Timeline</h1>
+  <p class="lead">Comprehensive record of Avalon's revolution — entities, users, and historical data design</p>
 
   <div class="theme-toggle">
     <button class="toggle-btn" id="themeToggle">Switch to Dark Mode</button>
   </div>
 
+  <!-- TIMELINE SECTION -->
+  <section>
+  <h2>Revolutionary Timeline</h2>
   <table>
     <thead>
-      <tr>
-        <th>Year</th>
-        <th>Event</th>
-        <th>Story &amp; Significance (linked DB entities)</th>
-      </tr>
+      <tr><th>Year</th><th>Event</th><th>Story &amp; Significance</th></tr>
     </thead>
     <tbody>
-      <tr style="--i:1">
-        <td class="year">1770</td>
-        <td class="event">The Hidden Bloodline</td>
-        <td>
-          King <strong>Aurelius Pendragon IX</strong> publicly reveals the royal family's Arthurian lineage. The monarchy claims divine authority through <strong>Excalibur</strong>, formally binding Avalon and France into one realm.  
-          <span class="entities">Entities: Citizen, Faction, Artifact</span>
-        </td>
-      </tr>
-      <tr style="--i:2">
-        <td class="year">1785</td>
-        <td class="event">Rise of the Magical Estates</td>
-        <td>
-          Nobles organize into elite magical factions — <em>Order of the Light</em>, <em>House of Pendragon</em>, and <em>Circle of Shadows</em>. Intellectuals and peasants rally around Lucien Moreau (“Fire of the People”). This stratification seeds later unrest.  
-          <span class="entities">Entities: Faction, Citizen</span>
-        </td>
-      </tr>
-      <tr style="--i:3">
-        <td class="year">1788</td>
-        <td class="event">The Famine of Frost</td>
-        <td>
-          A magical experiment backfires, triggering a winter that destroys harvests. Nobles hoard supplies in <strong>Resource Depots</strong>, prompting thefts and growing anger among commoners. The scarcity accelerates calls for reform.  
-          <span class="entities">Entities: ResourceDepot, Decree, Estate</span>
-        </td>
-      </tr>
-      <tr style="--i:4">
-        <td class="year">1789</td>
-        <td class="event">The Spark at Montclair</td>
-        <td>
-          Riots erupt when Lucien Moreau and rebel-mage <strong>Elara D’Avenir</strong> storm Montclair and seize the <strong>Stone of Truth</strong>, exposing forged royal decrees. This act ignites the Revolution of Avalon.  
-          <span class="entities">Entities: Decree, Artifact, Trial</span>
-        </td>
-      </tr>
-      <tr style="--i:5">
-        <td class="year">1790</td>
-        <td class="event">Formation of the Council of Magic &amp; Justice</td>
-        <td>
-          The revolutionary leadership institutes the <strong>Council of Magic and Justice</strong> (led by Éloise Marten and Judge Renard Voss) to catalogue citizens, artifacts, and estates — the first organized attempt to track magical & civic records.  
-          <span class="entities">Entities: Citizen, Faction, Decree, Artifact, Estate</span>
-        </td>
-      </tr>
-      <tr style="--i:6">
-        <td class="year">1791</td>
-        <td class="event">The First Magical Trials</td>
-        <td>
-          The newly formed Revolutionary Tribunal tries nobles and corrupt mages. Trials rely on evidence from the Stone of Truth; many verdicts become public spectacles. Records of verdicts and punishments become central to the archive.  
-          <span class="entities">Entities: Trial, Citizen, Decree</span>
-        </td>
-      </tr>
-      <tr style="--i:7">
-        <td class="year">1792</td>
-        <td class="event">Decree of Purification</td>
-        <td>
-          The Order of the Light issues a decree aimed at purging “corrupt” magic. Spell backfires lead to mass casualties — the decree is later revoked and used as evidence in prosecutions. The incident deepens factional mistrust.  
-          <span class="entities">Entities: Decree, Faction, Trial</span>
-        </td>
-      </tr>
-      <tr style="--i:8">
-        <td class="year">1793</td>
-        <td class="event">The Shattering of the Crown</td>
-        <td>
-          In a climactic confrontation King Aurelius unleashes the spectral host through <strong>Excalibur</strong>. Elara D’Avenir sacrifices herself to break the sword; the monarchy collapses as the Crown is shattered. This marks the turning point in both politics and magic.  
-          <span class="entities">Entities: Artifact, Citizen, Faction</span>
-        </td>
-      </tr>
-      <tr style="--i:9">
-        <td class="year">1794</td>
-        <td class="event">The Pendulum War</td>
-        <td>
-          Royalist holdouts led by sorcerer Mordren Leclair attempt to use the <strong>Chronomancer’s Pendulum</strong> to rewrite key events. Time-warp tactics fracture loyalties and spawn new splinter groups, complicating archival integrity.  
-          <span class="entities">Entities: Artifact, Faction, Trial</span>
-        </td>
-      </tr>
-      <tr style="--i:10">
-        <td class="year">1795</td>
-        <td class="event">Restoration of Balance</td>
-        <td>
-          The Council issues the <strong>Final Decree of Unity</strong>, forbidding further magical warfare. The Pendulum and other dangerous relics are sealed in the Grand Vault and guarded by the newly founded faction, the <em>Guardians of Time</em>.  
-          <span class="entities">Entities: Decree, ResourceDepot, Faction, Artifact</span>
-        </td>
-      </tr>
-      <tr style="--i:11">
-        <td class="year">1800</td>
-        <td class="event">Age of Archives</td>
-        <td>
-          Reconstruction begins. Archivists and historians (your database builders) assemble the <strong>Revolutionary Database System</strong> to preserve records of citizens, trials, decrees, artifacts, and prophecies so history cannot be rewritten again.  
-          <span class="entities">Entities: Citizen, Trial, Decree, Artifact, Prophecy</span>
-        </td>
-      </tr>
+      <tr style="--i:1"><td class="year">1770</td><td class="event">The Hidden Bloodline</td><td>King <strong>Aurelius Pendragon IX</strong> publicly reveals Arthurian lineage...<span class="entities">Entities: Citizen, Faction, Artifact</span></td></tr>
+      <tr style="--i:2"><td class="year">1785</td><td class="event">Rise of the Magical Estates</td><td>Nobles form factions—Order of Light, House of Pendragon...<span class="entities">Entities: Faction, Citizen</span></td></tr>
+      <tr style="--i:3"><td class="year">1788</td><td class="event">The Famine of Frost</td><td>Magical experiment triggers winter famine...<span class="entities">Entities: ResourceDepot, Decree, Estate</span></td></tr>
+      <tr style="--i:4"><td class="year">1789</td><td class="event">The Spark at Montclair</td><td>Lucien Moreau and Elara D’Avenir seize the <strong>Stone of Truth</strong>...<span class="entities">Entities: Decree, Artifact, Trial</span></td></tr>
+      <tr style="--i:5"><td class="year">1793</td><td class="event">The Shattering of the Crown</td><td>Elara sacrifices herself to destroy <strong>Excalibur</strong>...<span class="entities">Entities: Artifact, Citizen, Faction</span></td></tr>
+      <tr style="--i:6"><td class="year">1800</td><td class="event">Age of Archives</td><td>Archivists build the <strong>Revolutionary Database System</strong>...<span class="entities">Entities: Citizen, Trial, Decree, Artifact, Prophecy</span></td></tr>
     </tbody>
   </table>
+  </section>
+
+  <!-- USER IDENTIFICATION -->
+  <section>
+    <h2>User Identification & Interaction</h2>
+    <table>
+      <thead><tr><th>User Type</th><th>Role</th><th>Database Interaction</th></tr></thead>
+      <tbody>
+        <tr><td>Revolutionary Council Members</td><td>Oversee magical and political order</td><td>Create, update, and query decrees, trials, and citizen data</td></tr>
+        <tr><td>Judges of the Tribunal</td><td>Conduct magical and political trials</td><td>View verdicts, apply decrees, record punishments</td></tr>
+        <tr><td>Faction Leaders</td><td>Lead revolutionary or royalist groups</td><td>Update faction influence, add members, propose decrees</td></tr>
+        <tr><td>Archivists (You)</td><td>Database administrators and historians</td><td>Ensure data consistency, generate analytical reports</td></tr>
+        <tr><td>Citizens / Mages</td><td>Registered inhabitants</td><td>View personal data, faction affiliation, estate details</td></tr>
+        <tr><td>Seers (Prophets)</td><td>Magical entities predicting revolts</td><td>Query prophecy data and loyalty statistics</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ENTITIES -->
+  <section>
+    <h2>Entities and Attributes</h2>
+    <table>
+      <thead><tr><th>Entity</th><th>Description / Purpose</th><th>Key Attributes (Columns)</th></tr></thead>
+      <tbody>
+        <tr><td>Citizen</td><td>Represents all individuals (peasants, nobles, mages)</td><td>citizen_id (PK), full_name, class_type, birth_year, district, loyalty_score, status</td></tr>
+        <tr><td>Faction</td><td>Political or magical group</td><td>faction_id (PK), name, ideology, leader_name, founded_year, influence_level, magic_affinity</td></tr>
+        <tr><td>Trial</td><td>Legal/magical proceeding</td><td>trial_id (PK), accused_id (FK→Citizen), judge_id (FK→Citizen), start_date, verdict_date, verdict, punishment, decree_id (FK→Decree)</td></tr>
+        <tr><td>Decree</td><td>Official order or magical law</td><td>decree_id (PK), title, issue_date, description, issued_by (FK→Faction), magic_effect, enforcement_level</td></tr>
+        <tr><td>Estate</td><td>Property owned or seized</td><td>estate_id (PK), owner_id (FK→Citizen), location, size_acres, type, value_francs, contains_relic</td></tr>
+        <tr><td>Artifact</td><td>Magical relic from Avalon</td><td>artifact_id (PK), name, power_type, origin, current_holder (FK→Citizen), danger_level</td></tr>
+        <tr><td>Prophecy</td><td>Record of magical foresight</td><td>prophecy_id (PK), seer_id (FK→Citizen), content, date_predicted, outcome_status</td></tr>
+        <tr><td>ResourceDepot</td><td>Repository for goods or magical items</td><td>depot_id (PK), location, depot_type, capacity, managed_by (FK→Citizen)</td></tr>
+        <tr><td>FamilyMember (Weak)</td><td>Stores relationships of citizens</td><td>family_id (PK), citizen_id (FK→Citizen), relation_type, relative_name, relative_status</td></tr>
+        <tr><td>SeizedAsset (Weak)</td><td>Confiscated property assets</td><td>asset_id (PK), estate_id (FK→Estate), asset_name, estimated_value, category</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SPECIAL DESIGN -->
+  <section>
+    <h2>Special Design Features</h2>
+    <table class="design-table">
+        <thead>
+        <tr>
+            <th>Type</th>
+            <th>Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Subclass Hierarchy</td>
+            <td>
+            <div class="relation-item"><strong>Citizen</strong> → {Mage, Soldier, Noble}</div>
+            <div class="relation-item"><strong>Artifact</strong> → {Weapon, Relic, CursedObject}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>Relationships</td>
+            <td>
+            <div class="relation-item"><strong>Citizen</strong> ↔ <strong>Faction</strong> (M:N)</div>
+            <div class="relation-item"><strong>Citizen</strong> → <strong>Trial</strong> (1:N)</div>
+            <div class="relation-item"><strong>Faction</strong> → <strong>Decree</strong> (1:N)</div>
+            <div class="relation-item"><strong>Decree</strong> → <strong>Artifact</strong> (1:N)</div>
+            <div class="relation-item"><strong>Artifact</strong> → <strong>Citizen</strong> (N:1)</div>
+            <div class="relation-item"><strong>Citizen</strong> → <strong>Estate</strong> (1:N)</div>
+            <div class="relation-item"><strong>Estate</strong> → <strong>SeizedAsset</strong> (1:N)</div>
+            <div class="relation-item"><strong>Citizen</strong> → <strong>FamilyMember</strong> (1:N)</div>
+            <div class="relation-item"><strong>Citizen</strong> → <strong>Prophecy</strong> (1:N)</div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    </section>
+
+    <style>
+    .design-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--table-bg);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-top: 18px;
+        font-size: 0.97em;
+    }
+
+    .design-table thead th {
+        background: linear-gradient(90deg, #b6933a, #d1b25f);
+        color: #2b2100;
+        text-align: left;
+        padding: 14px 18px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        border-bottom: 2px solid rgba(0,0,0,0.08);
+    }
+
+    [data-theme="dark"] .design-table thead th {
+        background: linear-gradient(90deg, #7e6729, #a88e45);
+        color: #fff8d4;
+    }
+
+    .design-table tbody td {
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        vertical-align: top;
+    }
+
+    .design-table tbody tr:nth-child(even) td {
+        background: rgba(255, 244, 210, 0.4);
+    }
+
+    [data-theme="dark"] .design-table tbody tr:nth-child(even) td {
+        background: rgba(255, 250, 200, 0.05);
+    }
+
+    .design-table tbody tr:hover td {
+        background: rgba(212, 180, 96, 0.15);
+        transition: background 0.25s ease;
+    }
+
+    [data-theme="dark"] .design-table tbody tr:hover td {
+        background: rgba(255, 230, 160, 0.08);
+    }
+
+    .relation-item {
+        margin: 4px 0;
+        padding-left: 4px;
+    }
+
+    .relation-item strong {
+        color: var(--accent-color);
+        font-weight: 600;
+    }
+
+    [data-theme="dark"] .relation-item strong {
+        color: #e3c86b;
+    }
+    </style>
+
+  <!-- FUNCTIONAL REQUIREMENTS -->
+  <section>
+    <h2>Functional Requirements</h2>
+
+    <h3>Retrieval Operations</h3>
+    <table>
+      <thead><tr><th>Type</th><th>Example Query</th><th>Purpose / Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>Selection</td><td>Retrieve all mages with loyalty_score &lt; 40 in royalist factions</td><td>Detect potential traitors</td></tr>
+        <tr><td>Projection</td><td>Display names, power_type, and danger_level of artifacts held by nobles</td><td>Monitor relic distribution</td></tr>
+        <tr><td>Aggregate</td><td>Calculate average loyalty_score by faction</td><td>Assess faction stability</td></tr>
+        <tr><td>Search</td><td>Find decrees with titles containing 'Excalibur'</td><td>Lookup magical laws related to specific relics</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Analysis Reports</h3>
+    <table>
+      <thead><tr><th>Report Title</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Factional Power Dynamics</td><td>Compare influence levels of magical vs. political factions over time</td></tr>
+        <tr><td>Artifact-Loyalty Correlation</td><td>Analyze how possession of relics affects loyalty and survival rate</td></tr>
+        <tr><td>Trial Outcome Analytics</td><td>Study how decree type influences trial verdicts</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Modification Operations</h3>
+    <table>
+      <thead><tr><th>Operation</th><th>Example</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Insertion</td><td>Add a newly confiscated artifact 'Blade of Avalon' under Citizen #103</td><td>Update artifact registry</td></tr>
+        <tr><td>Update</td><td>Modify influence_level of 'Order of Light' after decree success</td><td>Reflect factional power shifts</td></tr>
+        <tr><td>Deletion</td><td>Delete a seized estate and cascade its assets</td><td>Maintain referential integrity</td></tr>
+      </tbody>
+    </table>
+  </section>
 
   <script>
     const btn = document.getElementById('themeToggle');
