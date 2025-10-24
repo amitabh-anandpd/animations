@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Marquee Example</title>
+    <style>
+        .headtop{
+            display: block;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 30px;
+            position: absolute;
+            background-color: black;
+            color: white;
+            text-align: center;
+            z-index: 10;
+        }
+        .headtop p{
+            padding-top: 7px;
+        }
+        .marquee2 {
+            white-space: nowrap;
+            max-height: 150px;
+            margin-bottom: 30px;
+            width: 100%;
+            overflow: hidden;
+            background-color: black;
+            color: white;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+        .marquee2 p{
+            margin: 0;
+            display: inline-block;
+            padding-left: 100%;
+            animation: scrollminus2 10s infinite linear;
+        }
+        .headtop .marquee2 p:hover{
+            animation-play-state: paused;
+        }
+        .marquee {
+            white-space: nowrap;
+            max-height: 150px;
+            margin-top: 40px;
+            width: 100%;
+            overflow: hidden;
+            background-color: white;
+            color: black;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+        .marquee p {
+            margin: 0;
+            display: inline-block;
+            padding-left: 100%;
+            animation: scrollplus 10s infinite linear;
+        }
+        .marquee h1x, .marquee2 h1x{
+            font-size: 70px;
+        }
+        @keyframes scrollminus2 {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        @keyframes scrollminus {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        @keyframes scrollplus {
+            0% {
+                transform: translateX(-100%);
+            }
+            50% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="headtop middle_align">
+        <span class="marquee2 middle_align">
+            <p>Your text here</p>
+        </span>
+    </section>
+</body>
+</html>
