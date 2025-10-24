@@ -1,1 +1,77 @@
-to be filled
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Example</title>
+    <style>
+        .products {
+            display: inline-block;
+            height: 100%;
+        }
+        .product {
+            position: relative;
+            width: 23%;
+            margin-bottom: 20px;
+            background-color: white;
+            overflow: hidden;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            transition: transform .2s;
+        }
+        .home-product-description {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            opacity: 0;
+            transform: translateX(-100%);
+            transition: transform .2s, opacity .2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .product:hover .home-product-description {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .product img {
+            width: 100%;
+        }
+        .marginbottom100{
+            margin-bottom: 100px;
+        }
+        .border{
+            border: solid black;
+        }
+        .product button{
+            opacity: 0;
+            margin-bottom: 20px;
+        }
+        .product:hover{
+            z-index: 3;
+        }
+        .product:hover button{
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <ul class="products">
+        <li class="product">
+            <a href="#">
+                <img src="../stickers/s9.png" alt="Product Image">
+                <div class="home-product-description">
+                    <p>Sample Product</p>
+                    <p>₹ 999</p>
+                </div>
+            </a>
+        </li>
+    </ul>
+</body>
+</html>
