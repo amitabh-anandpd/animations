@@ -1,329 +1,347 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="initial-scale=1, width=device-width">
-  	
-  	<link rel="stylesheet"  href="./service.css" />
-  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=[object Object]&display=swap" />
-  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=[object Object]&display=swap" />
-  	
-  	
-  	
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solviant - Expert Salesforce Solutions</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for vector icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom font setup using Google Fonts via Tailwind configuration */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=MuseoModerno:wght@600;700&display=swap');
+        
+        :root {
+            --color-primary: #5e8c92;
+            --color-secondary: #ecf3f4;
+            --color-dark: #1a1a1a;
+            --color-light-text: #4a4a4a;
+        }
+
+        .font-museo {
+            font-family: 'MuseoModerno', sans-serif;
+        }
+
+        .text-gradient {
+            background-color: var(--color-dark);
+            background-image: linear-gradient(180deg, #8bb8c1, #54838e 78.85%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-teal': 'var(--color-primary)',
+                        'light-bg': 'var(--color-secondary)',
+                        'dark-text': 'var(--color-dark)',
+                        'medium-gray': 'var(--color-light-text)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        museo: ['MuseoModerno', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-  	
-  	<div class="services">
-    		<div class="servicespage">
-      			<div class="main-content">
-        				<div class="featuressection">
-          					<div class="container">
-            						<div class="text">
-              							<div class="our-services">Our Services</div>
-            						</div>
-            						<div class="heading-2">
-              							<div class="expert-salesforce-solutions">Expert Salesforce Solutions</div>
-            						</div>
-          					</div>
-          					<div class="container2">
-            						<div class="heading-3">
-              							<div class="agentforce-revenue-management">Agentforce Revenue Management</div>
-            						</div>
-            						<div class="paragraph">
-              							<div class="comprehensive-revenue-cloud">Comprehensive Revenue Cloud solutions to optimise your CPQ and billing operations</div>
-            						</div>
-            						<div class="container3">
-              							<div class="container4">
-                								<img class="container-icon" alt="">
-                								
-                								<div class="heading-4">
-                  									<div class="health-check">Health Check & Optimisation</div>
-                								</div>
-                								<div class="paragraph2">
-                  									<div class="a-detailed-assessment">A detailed assessment of your existing CPQ/billing environment: identify performance bottlenecks, pricing inconsistencies, system mis-alignments and user friction, then deliver a focused transformation roadmap.</div>
-                								</div>
-              							</div>
-              							<div class="container5">
-                								<img class="container-icon" alt="">
-                								
-                								<div class="heading-4">
-                  									<div class="transformation-to-rcarcb">Transformation to RCA/RCB</div>
-                								</div>
-                								<div class="paragraph2">
-                  									<div class="a-detailed-assessment">Upgrade your legacy CPQ/Billing to the modern Revenue Cloud Architecture (RCA) and Billing (RCB) frameworks. We manage data migration, process redesign, and system rollout with minimal disruption.</div>
-                								</div>
-              							</div>
-              							<div class="container6">
-                								<img class="container-icon" alt="">
-                								
-                								<div class="heading-43">
-                  									<div class="revenue-cloud-advanced">Revenue Cloud Advanced Implementation</div>
-                								</div>
-                								<div class="paragraph2">
-                  									<div class="build-sophisticated-capabiliti">Build sophisticated capabilities including bundled offers, subscription-and-usage models, multi-channel quoting, and advanced pricing logic. Integrate seamlessly with CRM, ERP and financial systems to streamline revenue operations end-to-end.</div>
-                								</div>
-              							</div>
-              							<div class="container7">
-                								<img class="container-icon" alt="">
-                								
-                								<div class="heading-43">
-                  									<div class="revenue-cloud-advanced">Revenue Cloud Billing Implementation</div>
-                								</div>
-                								<div class="paragraph2">
-                  									<div class="implement-automated-billing">Implement automated billing lifecycles, ensure accurate invoicing and payments, enforce revenue recognition standards, and provide finance and operations teams with clarity and control.</div>
-                								</div>
-              							</div>
-            						</div>
-          					</div>
-          					<div class="container8">
-            						<div class="heading-3">
-              							<div class="agentforce-ai-services">Agentforce AI Services</div>
-            						</div>
-            						<div class="paragraph">
-              							<div class="empower-your-teams">Empower your teams with intelligent AI-driven capabilities and automation</div>
-            						</div>
-            						<div class="container9">
-              							<div class="container10">
-                								<img class="container-icon" alt="">
-                								
-                								<div class="heading-45">
-                  									<div class="agentforce-readiness">Agentforce Readiness & Assessment</div>
-                								</div>
-                								<div class="paragraph7">
-                  									<div class="review-your-current">Review your current agent processes, knowledge bases, and interaction workflows to identify opportunities for AI-enhancement, automation and insight.</div>
-                								</div>
-              							</div>
-              							<div class="container11">
-                								<img class="container-icon" alt="">
-                								
-                								<div class="heading-45">
-                  									<div class="revenue-cloud-advanced">Agentforce AI Implementation</div>
-                								</div>
-                								<div class="paragraph7">
-                  									<div class="deploy-smart-routing">Deploy smart routing, context-aware assistance, knowledge automation and predictive analytics to boost agent productivity, while improving customer experience.</div>
-                								</div>
-              							</div>
-              							<div class="container12">
-                								<img class="container-icon" alt="">
-                								
-                								<div class="heading-47">
-                  									<div class="agentforce-ai-optimisation">Agentforce AI Optimisation</div>
-                								</div>
-                								<div class="paragraph7">
-                  									<div class="after-go-live-monitor">After go-live, monitor usage, refine models, enhance knowledge content and fine-tune AI decision-flows so your system adapts to your evolving business needs.</div>
-                								</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div>
-        				<div class="processsection">
-          					<div class="container13">
-            						<div class="heading-22">
-              							<div class="our-process">Our Process</div>
-            						</div>
-            						<div class="paragraph10">
-              							<div class="a-proven-methodology">A proven methodology that delivers results</div>
-            						</div>
-          					</div>
-          					<div class="container14">
-            						<div class="container15">
-              							<div class="container16">
-              							</div>
-              							<div class="container17">
-                								<div class="container18">
-                  									<b class="b">01</b>
-                								</div>
-                								<div class="heading-33">
-                  									<div class="discovery">Discovery</div>
-                								</div>
-                								<div class="paragraph11">
-                  									<div class="we-analyze-your">We analyze your current operations and identify optimization opportunities</div>
-                								</div>
-              							</div>
-            						</div>
-            						<div class="container19">
-              							<div class="container16">
-              							</div>
-              							<div class="container17">
-                								<div class="container22">
-                  									<b class="b">02</b>
-                								</div>
-                								<div class="heading-34">
-                  									<div class="discovery">Strategy</div>
-                								</div>
-                								<div class="paragraph11">
-                  									<div class="develop-a-customized">Develop a customized implementation plan tailored to your needs</div>
-                								</div>
-              							</div>
-            						</div>
-            						<div class="container23">
-              							<div class="container16">
-              							</div>
-              							<div class="container17">
-                								<div class="container26">
-                  									<b class="b">03</b>
-                								</div>
-                								<div class="heading-35">
-                  									<div class="discovery">Implementation</div>
-                								</div>
-                								<div class="paragraph11">
-                  									<div class="deploy-the-solution">Deploy the solution with minimal disruption to your operations</div>
-                								</div>
-              							</div>
-            						</div>
-            						<div class="container27">
-              							<div class="container28">
-                								<b class="b">04</b>
-              							</div>
-              							<div class="heading-36">
-                								<div class="discovery">Optimization</div>
-              							</div>
-              							<div class="paragraph11">
-                								<div class="continuously-monitor-and">Continuously monitor and refine for maximum efficiency</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div>
-        				<div class="ctasection">
-          					<div class="heading-23">
-            						<div class="ready-to-transform">Ready to Transform Your Business?</div>
-          					</div>
-          					<div class="paragraph15">
-            						<div class="get-started-with">Get started with Solviant today and experience the difference that smart automation can make for your business.</div>
-          					</div>
-          					<div class="button">
-            						<div class="get-started-now">Get Started Now</div>
-          					</div>
-        				</div>
-        				<div class="serviceshero">
-          					<div class="container29">
-            						<div class="container30">
-            						</div>
-            						<div class="container31">
-            						</div>
-          					</div>
-          					<div class="container32">
-            						<div class="text2">
-              							<div class="our-services">What We Offer</div>
-            						</div>
-            						<div class="heading-1">
-              							<b class="expert-salesforce-solutions2">Expert Salesforce Solutions</b>
-            						</div>
-          					</div>
-        				</div>
-      			</div>
-      			<div class="footer">
-        				<div class="container33">
-          					<div class="container34">
-            						<img class="image-solviant-icon" alt="">
-            						
-            						<div class="paragraph16">
-              							<div class="transforming-business-operatio">Transforming business operations through intelligent automation and data-driven insights.</div>
-            						</div>
-            						<div class="container35">
-              							<img class="link-icon" alt="">
-              							
-              							<img class="link-icon" alt="">
-              							
-              							<img class="link-icon" alt="">
-              							
-              							<img class="link-icon" alt="">
-              							
-            						</div>
-          					</div>
-          					<div class="container36">
-            						<div class="heading-48">
-              							<div class="agentforce-ai-optimisation">Quick Links</div>
-            						</div>
-            						<div class="container37">
-              							<div class="link">
-                								<div class="home">Home</div>
-              							</div>
-              							<div class="link2">
-                								<div class="home">About</div>
-              							</div>
-              							<div class="link3">
-                								<div class="home">Services</div>
-              							</div>
-              							<div class="link4">
-                								<div class="home">Blog</div>
-              							</div>
-              							<div class="link5">
-                								<div class="home">Our Team</div>
-              							</div>
-            						</div>
-          					</div>
-          					<div class="container38">
-            						<div class="heading-48">
-              							<div class="agentforce-ai-optimisation">Get in Touch</div>
-            						</div>
-            						<div class="container39">
-              							<div class="link6">
-                								<img class="icon" alt="">
-                								
-                								<div class="text3">
-                  									<div class="home">ContactUs@solviant.com</div>
-                								</div>
-              							</div>
-              							<div class="link7">
-                								<img class="icon" alt="">
-                								
-                								<div class="text4">
-                  									<div class="home">+31 (0) 641506636</div>
-                								</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div>
-        				<div class="container40">
-          					<div class="container41">
-            						<div class="paragraph17">
-              							<div class="solviant-all-rights">© 2025 Solviant. All rights reserved.</div>
-            						</div>
-            						<div class="container42">
-              							<div class="link8">
-                								<div class="solviant-all-rights">Privacy Policy</div>
-              							</div>
-              							<div class="link9">
-                								<div class="solviant-all-rights">Terms of Service</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div>
-      			</div>
-    		</div>
-    		<div class="navbar">
-      			<div class="container43">
-        				<img class="link-icon5" alt="">
-        				
-        				<div class="container44">
-          					<div class="link10">
-            						<div class="home2">Home</div>
-          					</div>
-          					<div class="link11">
-            						<div class="home2">About</div>
-          					</div>
-          					<div class="link12">
-            						<div class="home2">Services</div>
-          					</div>
-          					<div class="link13">
-            						<div class="home2">Blog</div>
-          					</div>
-          					<div class="link14">
-            						<div class="home2">Our Team</div>
-          					</div>
-        				</div>
-        				<div class="link15">
-          					<div class="button2">
-            						<div class="contact-us">Contact Us</div>
-          					</div>
-        				</div>
-      			</div>
-    		</div>
-  	</div>
-  	
-  	
-  	
-  	
+<body class="bg-white font-sans text-dark-text min-h-screen flex flex-col">
+
+    <!-- Navbar (Consistent across site) -->
+    <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center space-x-2 font-museo text-3xl font-bold text-primary-teal">
+                <i data-lucide="ant-truck" class="w-8 h-8"></i>
+                <span>Solviant</span>
+            </a>
+            
+            <!-- Desktop Links -->
+            <div class="hidden md:flex space-x-8 text-base text-medium-gray font-medium">
+                <a href="index.html#home" class="hover:text-primary-teal transition duration-150">Home</a>
+                <a href="index.html#about" class="hover:text-primary-teal transition duration-150">About</a>
+                <a href="#" class="text-primary-teal font-semibold">Services</a>
+                <a href="blog.html" class="hover:text-primary-teal transition duration-150">Blog</a>
+                <a href="index.html#team" class="hover:text-primary-teal transition duration-150">Our Team</a>
+            </div>
+
+            <!-- Contact Button -->
+            <a href="index.html#contact" class="hidden md:block bg-primary-teal text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:bg-opacity-90 transition duration-300">
+                Contact Us
+            </a>
+
+            <!-- Mobile Menu Button (Placeholder) -->
+            <button class="md:hidden p-2 rounded-lg text-primary-teal hover:bg-light-bg transition">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+        
+        <!-- Services Hero Section -->
+        <section id="services-hero" class="bg-primary-teal pt-16 pb-16 sm:pt-24 sm:pb-20 text-center relative overflow-hidden">
+            <!-- Background effects (based on original CSS blur containers) -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-1/2 left-3/4 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white rounded-full blur-[128px]"></div>
+                <div class="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#e9c46a] rounded-full blur-[128px]"></div>
+            </div>
+
+            <div class="relative container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+                <span class="inline-block text-sm font-semibold text-white bg-white/20 py-2 px-4 rounded-full mb-4 shadow-inner">
+                    What We Offer
+                </span>
+                <h1 class="font-museo text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                    Expert Salesforce Solutions
+                </h1>
+            </div>
+        </section>
+
+        <!-- Features Section (Service Cards) -->
+        <section id="features-section" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+                
+                <!-- Revenue Management Services -->
+                <div class="mb-20">
+                    <div class="text-center mb-12">
+                        <h2 class="font-museo text-3xl md:text-4xl font-semibold text-dark-text mb-2">
+                            Agentforce Revenue Management
+                        </h2>
+                        <p class="text-lg text-medium-gray max-w-3xl mx-auto">
+                            Comprehensive Revenue Cloud solutions to optimise your CPQ and billing operations.
+                        </p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Card 1: Health Check & Optimisation -->
+                        <div class="bg-light-bg p-6 rounded-xl shadow-lg flex flex-col items-start text-left space-y-4 h-full">
+                            <i data-lucide="bar-chart-3" class="w-10 h-10 text-primary-teal p-2 bg-white rounded-xl shadow-md"></i>
+                            <h3 class="font-museo text-lg font-semibold text-dark-text leading-snug">Health Check & Optimisation</h3>
+                            <p class="text-sm text-gray-600 flex-grow">
+                                A detailed assessment of your existing CPQ/billing environment: identify performance bottlenecks, pricing inconsistencies, system mis-alignments and user friction, then deliver a focused transformation roadmap.
+                            </p>
+                        </div>
+                        
+                        <!-- Card 2: Transformation to RCA/RCB -->
+                        <div class="bg-light-bg p-6 rounded-xl shadow-lg flex flex-col items-start text-left space-y-4 h-full">
+                            <i data-lucide="arrow-up-circle" class="w-10 h-10 text-primary-teal p-2 bg-white rounded-xl shadow-md"></i>
+                            <h3 class="font-museo text-lg font-semibold text-dark-text leading-snug">Transformation to RCA/RCB</h3>
+                            <p class="text-sm text-gray-600 flex-grow">
+                                Upgrade your legacy CPQ/Billing to the modern Revenue Cloud Architecture (RCA) and Billing (RCB) frameworks. We manage data migration, process redesign, and system rollout with minimal disruption.
+                            </p>
+                        </div>
+
+                        <!-- Card 3: Revenue Cloud Advanced Implementation -->
+                        <div class="bg-light-bg p-6 rounded-xl shadow-lg flex flex-col items-start text-left space-y-4 h-full">
+                            <i data-lucide="workflow" class="w-10 h-10 text-primary-teal p-2 bg-white rounded-xl shadow-md"></i>
+                            <h3 class="font-museo text-lg font-semibold text-dark-text leading-snug">Revenue Cloud Advanced Implementation</h3>
+                            <p class="text-sm text-gray-600 flex-grow">
+                                Build sophisticated capabilities including bundled offers, subscription-and-usage models, multi-channel quoting, and advanced pricing logic. Integrate seamlessly with CRM, ERP and financial systems to streamline revenue operations end-to-end.
+                            </p>
+                        </div>
+
+                        <!-- Card 4: Revenue Cloud Billing Implementation -->
+                        <div class="bg-light-bg p-6 rounded-xl shadow-lg flex flex-col items-start text-left space-y-4 h-full">
+                            <i data-lucide="receipt" class="w-10 h-10 text-primary-teal p-2 bg-white rounded-xl shadow-md"></i>
+                            <h3 class="font-museo text-lg font-semibold text-dark-text leading-snug">Revenue Cloud Billing Implementation</h3>
+                            <p class="text-sm text-gray-600 flex-grow">
+                                Implement automated billing lifecycles, ensure accurate invoicing and payments, enforce revenue recognition standards, and provide finance and operations teams with clarity and control.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Services -->
+                <div>
+                    <div class="text-center mb-12">
+                        <h2 class="font-museo text-3xl md:text-4xl font-semibold text-dark-text mb-2">
+                            Agentforce AI Services
+                        </h2>
+                        <p class="text-lg text-medium-gray max-w-3xl mx-auto">
+                            Empower your teams with intelligent AI-driven capabilities and automation.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                        <!-- Card 5: AI Readiness & Assessment -->
+                        <div class="bg-light-bg p-6 rounded-xl shadow-lg flex flex-col items-start text-left space-y-4 h-full">
+                            <i data-lucide="brain" class="w-10 h-10 text-primary-teal p-2 bg-white rounded-xl shadow-md"></i>
+                            <h3 class="font-museo text-lg font-semibold text-dark-text leading-snug">Agentforce Readiness & Assessment</h3>
+                            <p class="text-sm text-gray-600 flex-grow">
+                                Review your current agent processes, knowledge bases, and interaction workflows to identify opportunities for AI-enhancement, automation and insight.
+                            </p>
+                        </div>
+
+                        <!-- Card 6: AI Implementation -->
+                        <div class="bg-light-bg p-6 rounded-xl shadow-lg flex flex-col items-start text-left space-y-4 h-full">
+                            <i data-lucide="cpu" class="w-10 h-10 text-primary-teal p-2 bg-white rounded-xl shadow-md"></i>
+                            <h3 class="font-museo text-lg font-semibold text-dark-text leading-snug">Agentforce AI Implementation</h3>
+                            <p class="text-sm text-gray-600 flex-grow">
+                                Deploy smart routing, context-aware assistance, knowledge automation and predictive analytics to boost agent productivity, while improving customer experience.
+                            </p>
+                        </div>
+                        
+                        <!-- Card 7: AI Optimisation -->
+                        <div class="bg-light-bg p-6 rounded-xl shadow-lg flex flex-col items-start text-left space-y-4 h-full">
+                            <i data-lucide="sparkles" class="w-10 h-10 text-primary-teal p-2 bg-white rounded-xl shadow-md"></i>
+                            <h3 class="font-museo text-lg font-semibold text-dark-text leading-snug">Agentforce AI Optimisation</h3>
+                            <p class="text-sm text-gray-600 flex-grow">
+                                After go-live, monitor usage, refine models, enhance knowledge content and fine-tune AI decision-flows so your system adapts to your evolving business needs.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Process Section (Reused from index.html for consistency) -->
+        <section id="process" class="py-24 bg-light-bg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="font-museo text-3xl md:text-4xl font-semibold text-dark-text mb-4">
+                    Our Process
+                </h2>
+                <p class="text-lg text-medium-gray mb-16">
+                    A proven methodology that delivers results
+                </p>
+
+                <!-- Process Steps -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                    
+                    <!-- Step 1: Discovery -->
+                    <div class="relative flex flex-col items-center p-6 border-b-2 md:border-b-0 md:border-r-2 border-primary-teal/30 md:last:border-r-0">
+                        <div class="text-6xl font-museo font-extrabold text-primary-teal/30 mb-4">01</div>
+                        <h3 class="font-museo text-xl font-semibold text-dark-text mb-3">Discovery</h3>
+                        <p class="text-base text-gray-600">We analyze your current operations and identify optimization opportunities.</p>
+                        <!-- Arrow for desktop visual flow -->
+                        <div class="absolute right-0 top-1/4 transform translate-x-1/2 hidden lg:block">
+                            <i data-lucide="arrow-right" class="w-8 h-8 text-primary-teal/50"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Strategy -->
+                    <div class="relative flex flex-col items-center p-6 border-b-2 md:border-b-0 md:border-r-2 border-primary-teal/30 md:last:border-r-0">
+                        <div class="text-6xl font-museo font-extrabold text-primary-teal/30 mb-4">02</div>
+                        <h3 class="font-museo text-xl font-semibold text-dark-text mb-3">Strategy</h3>
+                        <p class="text-base text-gray-600">Develop a customized implementation plan tailored to your needs.</p>
+                        <div class="absolute right-0 top-1/4 transform translate-x-1/2 hidden lg:block">
+                            <i data-lucide="arrow-right" class="w-8 h-8 text-primary-teal/50"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Implementation -->
+                    <div class="relative flex flex-col items-center p-6 border-b-2 md:border-b-0 md:border-r-2 border-primary-teal/30 md:last:border-r-0">
+                        <div class="text-6xl font-museo font-extrabold text-primary-teal/30 mb-4">03</div>
+                        <h3 class="font-museo text-xl font-semibold text-dark-text mb-3">Implementation</h3>
+                        <p class="text-base text-gray-600">Deploy the solution with minimal disruption to your operations.</p>
+                        <div class="absolute right-0 top-1/4 transform translate-x-1/2 hidden lg:block">
+                            <i data-lucide="arrow-right" class="w-8 h-8 text-primary-teal/50"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 4: Optimization -->
+                    <div class="relative flex flex-col items-center p-6">
+                        <div class="text-6xl font-museo font-extrabold text-primary-teal/30 mb-4">04</div>
+                        <h3 class="font-museo text-xl font-semibold text-dark-text mb-3">Optimization</h3>
+                        <p class="text-base text-gray-600">Continuously monitor and refine for maximum efficiency.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- CTA Section (Consistent across site) -->
+        <section id="cta" class="py-24 bg-primary-teal text-white text-center">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="font-museo text-3xl md:text-4xl font-semibold mb-6">
+                    Ready to Transform Your Business?
+                </h2>
+                <p class="max-w-3xl mx-auto text-lg text-white/90 mb-10">
+                    Get started with Solviant today and experience the difference that smart automation can make for your business.
+                </p>
+                <a href="index.html#contact" class="inline-block bg-white text-primary-teal font-semibold py-3 px-10 rounded-full shadow-2xl hover:bg-gray-100 transition duration-300 text-lg">
+                    Get Started Now
+                </a>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer (Consistent across site) -->
+    <footer class="bg-dark-text text-white py-16 mt-auto">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Footer Content Grid -->
+            <div class="grid md:grid-cols-4 gap-12 border-b border-white/10 pb-10">
+                
+                <!-- Col 1: Logo & Mission -->
+                <div class="space-y-6">
+                    <div class="text-3xl font-museo font-bold text-primary-teal">Solviant</div>
+                    <p class="text-sm text-white/70">Transforming business operations through intelligent automation and data-driven insights.</p>
+                    <div class="flex space-x-4">
+                        <!-- Social Icons -->
+                        <a href="#" class="p-2 rounded-full bg-white/10 hover:bg-primary-teal transition"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="#" class="p-2 rounded-full bg-white/10 hover:bg-primary-teal transition"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="#" class="p-2 rounded-full bg-white/10 hover:bg-primary-teal transition"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-white/70">
+                        <li><a href="index.html#home" class="hover:text-primary-teal transition">Home</a></li>
+                        <li><a href="index.html#about" class="hover:text-primary-teal transition">About</a></li>
+                        <li><a href="#" class="text-primary-teal font-medium">Services</a></li>
+                        <li><a href="blog.html" class="hover:text-primary-teal transition">Blog</a></li>
+                        <li><a href="index.html#team" class="hover:text-primary-teal transition">Our Team</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Get in Touch -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Get in Touch</h4>
+                    <ul class="space-y-4 text-sm text-white/70">
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="mail" class="w-5 h-5 text-primary-teal"></i>
+                            <a href="mailto:ContactUs@solviant.com" class="hover:text-primary-teal transition">ContactUs@solviant.com</a>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="phone" class="w-5 h-5 text-primary-teal"></i>
+                            <a href="tel:+31641506636" class="hover:text-primary-teal transition">+31 (0) 641506636</a>
+                        </li>
+                    </ul>
+                </div>
+
+                 <!-- Col 4: Additional Info (Placeholder) -->
+                 <div>
+                    <h4 class="text-lg font-semibold mb-6">Locations</h4>
+                    <p class="text-sm text-white/70">Amsterdam, NL<br>London, UK</p>
+                    <div class="mt-4">
+                        <i data-lucide="map-pin" class="w-6 h-6 text-primary-teal"></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Copyright Row -->
+            <div class="mt-8 pt-4 flex flex-col md:flex-row justify-between items-center text-sm text-white/50">
+                <p>&copy; 2025 Solviant. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-primary-teal transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-primary-teal transition">Terms of Service</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide icons -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>

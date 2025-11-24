@@ -1,181 +1,234 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  	<meta charset="utf-8">
-  	<meta name="viewport" content="initial-scale=1, width=device-width">
-  	
-  	<link rel="stylesheet"  href="./blog.css" />
-  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=[object Object]&display=swap" />
-  	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=[object Object]&display=swap" />
-  	
-  	
-  	
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solviant - Blog</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for vector icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom font setup using Google Fonts via Tailwind configuration */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=MuseoModerno:wght@600;700&display=swap');
+        
+        :root {
+            --color-primary: #5e8c92;
+            --color-secondary: #ecf3f4;
+            --color-dark: #1a1a1a;
+            --color-light-text: #4a4a4a;
+        }
+
+        .font-museo {
+            font-family: 'MuseoModerno', sans-serif;
+        }
+
+        .text-gradient {
+            background-color: var(--color-dark);
+            background-image: linear-gradient(180deg, #8bb8c1, #54838e 78.85%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-teal': 'var(--color-primary)',
+                        'light-bg': 'var(--color-secondary)',
+                        'dark-text': 'var(--color-dark)',
+                        'medium-gray': 'var(--color-light-text)',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        museo: ['MuseoModerno', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-  	
-  	<div class="blog">
-    		<div class="blogpage">
-      			<div class="main-content">
-        				<div class="heading-1">
-          					<b class="blog2">Blog</b>
-        				</div>
-        				<div class="container">
-          					<div class="container2">
-            						<div class="container3">
-              							<div class="heading-2">
-                								<div class="the-simplest-widget">The simplest Widget</div>
-              							</div>
-              							<div class="paragraph">
-                								<div class="qatchup-makes-it">Qatchup makes it easy to stay connected, so you can focus on building something amazing.</div>
-              							</div>
-            						</div>
-            						<div class="container4">
-              							<img class="container-icon" alt="">
-              							
-              							<div class="container5">
-                								<div class="paragraph2">
-                  									<div class="we-help-businesses">We help businesses transform and innovate using the Salesforce platform, making their processes more efficient and seamlessly integrating with other systems to support growth. With a focus on each client's unique needs, we create custom solutions that tackle their biggest challenges and set them up for long-term success.</div>
-                								</div>
-                								<div class="paragraph3">
-                  									<div class="but-lets-face">But let's face it: you're not building your product for yourself. You're building it for your users.</div>
-                								</div>
-                								<div class="button">
-                  									<div class="learn-more">Learn more</div>
-                								</div>
-              							</div>
-            						</div>
-          					</div>
-          					<div class="container6">
-            						<img class="button-icon" alt="">
-            						
-            						<div class="container7">
-              							<div class="button2">
-              							</div>
-              							<div class="button3">
-              							</div>
-              							<div class="button3">
-              							</div>
-            						</div>
-            						<img class="button-icon" alt="">
-            						
-          					</div>
-          					<div class="text">
-            						<div class="div">1 / 3</div>
-          					</div>
-        				</div>
-      			</div>
-      			<div class="footer">
-        				<div class="container8">
-          					<div class="container9">
-            						<img class="image-solviant-icon" alt="">
-            						
-            						<div class="paragraph4">
-              							<div class="transforming-business-operatio">Transforming business operations through intelligent automation and data-driven insights.</div>
-            						</div>
-            						<div class="container10">
-              							<img class="link-icon" alt="">
-              							
-              							<img class="link-icon" alt="">
-              							
-              							<img class="link-icon" alt="">
-              							
-              							<img class="link-icon" alt="">
-              							
-            						</div>
-          					</div>
-          					<div class="container11">
-            						<div class="heading-4">
-              							<div class="quick-links">Quick Links</div>
-            						</div>
-            						<div class="container12">
-              							<div class="link">
-                								<div class="home">Home</div>
-              							</div>
-              							<div class="link2">
-                								<div class="home">About</div>
-              							</div>
-              							<div class="link3">
-                								<div class="home">Services</div>
-              							</div>
-              							<div class="link4">
-                								<div class="home">Blog</div>
-              							</div>
-              							<div class="link5">
-                								<div class="home">Our Team</div>
-              							</div>
-            						</div>
-          					</div>
-          					<div class="container13">
-            						<div class="heading-4">
-              							<div class="quick-links">Get in Touch</div>
-            						</div>
-            						<div class="container14">
-              							<div class="link6">
-                								<img class="icon" alt="">
-                								
-                								<div class="text2">
-                  									<div class="home">ContactUs@solviant.com</div>
-                								</div>
-              							</div>
-              							<div class="link7">
-                								<img class="icon" alt="">
-                								
-                								<div class="text3">
-                  									<div class="home">+31 (0) 641506636</div>
-                								</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div>
-        				<div class="container15">
-          					<div class="container16">
-            						<div class="paragraph5">
-              							<div class="solviant-all-rights">© 2025 Solviant. All rights reserved.</div>
-            						</div>
-            						<div class="container17">
-              							<div class="link8">
-                								<div class="solviant-all-rights">Privacy Policy</div>
-              							</div>
-              							<div class="link9">
-                								<div class="solviant-all-rights">Terms of Service</div>
-              							</div>
-            						</div>
-          					</div>
-        				</div>
-      			</div>
-    		</div>
-    		<div class="navbar">
-      			<div class="container18">
-        				<img class="link-icon5" alt="">
-        				
-        				<div class="container19">
-          					<div class="link10">
-            						<div class="home2">Home</div>
-          					</div>
-          					<div class="link11">
-            						<div class="home2">About</div>
-          					</div>
-          					<div class="link12">
-            						<div class="home2">Services</div>
-          					</div>
-          					<div class="link13">
-            						<div class="home2">Blog</div>
-          					</div>
-          					<div class="link14">
-            						<div class="home2">Our Team</div>
-          					</div>
-        				</div>
-        				<div class="link15">
-          					<div class="button5">
-            						<div class="contact-us">Contact Us</div>
-          					</div>
-        				</div>
-      			</div>
-    		</div>
-  	</div>
-  	
-  	
-  	
-  	
+<body class="bg-white font-sans text-dark-text min-h-screen flex flex-col">
+
+    <!-- Navbar (Reused from index.html for consistency) -->
+    <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-100">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center space-x-2 font-museo text-3xl font-bold text-primary-teal">
+                <i data-lucide="ant-truck" class="w-8 h-8"></i>
+                <span>Solviant</span>
+            </a>
+            
+            <!-- Desktop Links -->
+            <div class="hidden md:flex space-x-8 text-base text-medium-gray font-medium">
+                <a href="index.html#home" class="hover:text-primary-teal transition duration-150">Home</a>
+                <a href="index.html#about" class="hover:text-primary-teal transition duration-150">About</a>
+                <a href="index.html#services" class="hover:text-primary-teal transition duration-150">Services</a>
+                <a href="#" class="text-primary-teal font-semibold">Blog</a>
+                <a href="index.html#team" class="hover:text-primary-teal transition duration-150">Our Team</a>
+            </div>
+
+            <!-- Contact Button -->
+            <a href="index.html#contact" class="hidden md:block bg-primary-teal text-white font-semibold py-2 px-6 rounded-full shadow-lg hover:bg-opacity-90 transition duration-300">
+                Contact Us
+            </a>
+
+            <!-- Mobile Menu Button (Placeholder for functionality) -->
+            <button class="md:hidden p-2 rounded-lg text-primary-teal hover:bg-light-bg transition">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+        
+        <!-- Blog Hero Section / Title -->
+        <section id="blog-header" class="bg-light-bg pt-16 pb-12 sm:pt-24 sm:pb-20 text-center">
+            <h1 class="font-museo text-5xl md:text-6xl font-bold text-primary-teal leading-tight">
+                Blog
+            </h1>
+            <p class="mt-4 text-xl text-medium-gray">Insights into Salesforce, AI, and Revenue Transformation.</p>
+        </section>
+
+        <!-- Main Blog Content Container -->
+        <section id="featured-blog" class="py-16 md:py-24 bg-light-bg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+                
+                <!-- Featured Blog Post Card -->
+                <article class="bg-white rounded-3xl shadow-2xl overflow-hidden p-6 md:p-10 space-y-8">
+                    
+                    <!-- Post Header -->
+                    <div class="text-center space-y-2">
+                        <h2 class="font-museo text-3xl md:text-4xl font-semibold text-dark-text leading-tight">
+                            Unlocking Revenue: How CPQ and Billing Automation Drive Growth
+                        </h2>
+                        <p class="text-base text-medium-gray">
+                            Automating your Quote-to-Cash process is no longer optional. Learn how integrated Revenue Cloud solutions are essential for scalable business growth.
+                        </p>
+                    </div>
+
+                    <!-- Content Grid (Image and Text/Summary) -->
+                    <div class="grid lg:grid-cols-2 gap-8 items-start">
+                        <!-- Image/Visual -->
+                        <div class="rounded-2xl overflow-hidden shadow-lg aspect-video lg:aspect-square flex items-center justify-center bg-light-bg border border-primary-teal/30">
+                            <img src="https://placehold.co/450x365/5e8c92/ffffff?text=Revenue+Cloud+Diagram" alt="Featured Blog Image Placeholder" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                        </div>
+
+                        <!-- Text Summary -->
+                        <div class="space-y-6 text-left text-lg">
+                            <p class="text-gray-700">
+                                We help businesses transform and innovate using the Salesforce platform, making their processes more efficient and seamlessly integrating with other systems to support growth. With a focus on each client's unique needs, we create custom solutions that tackle their biggest challenges and set them up for long-term success.
+                            </p>
+                            <p class="text-gray-900 font-semibold italic">
+                                This blog dives deep into how precision, speed, and seamless integration can solve your biggest revenue challenges.
+                            </p>
+                            <a href="#" class="inline-block bg-primary-teal text-white font-semibold py-3 px-8 rounded-xl shadow-md hover:bg-opacity-90 transition duration-300">
+                                Read More
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Pagination/Carousel Controls -->
+                <div class="flex justify-center items-center mt-12 space-x-4">
+                    <!-- Previous Button -->
+                    <button class="p-3 rounded-full bg-white shadow-md hover:bg-gray-100 transition duration-200 text-dark-text/80 hover:text-primary-teal border border-gray-200">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                    </button>
+                    
+                    <!-- Indicators -->
+                    <div class="flex space-x-2 items-center">
+                        <div class="w-6 h-3 rounded-full bg-primary-teal"></div> <!-- Active -->
+                        <div class="w-3 h-3 rounded-full bg-gray-400 hover:bg-gray-500 transition"></div>
+                        <div class="w-3 h-3 rounded-full bg-gray-400 hover:bg-gray-500 transition"></div>
+                    </div>
+                    
+                    <!-- Page Number (as requested in original CSS) -->
+                    <span class="text-sm text-medium-gray mx-4">1 / 3</span>
+                    
+                    <!-- Next Button -->
+                    <button class="p-3 rounded-full bg-white shadow-md hover:bg-gray-100 transition duration-200 text-dark-text/80 hover:text-primary-teal border border-gray-200">
+                        <i data-lucide="arrow-right" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (Reused from index.html for consistency) -->
+    <footer class="bg-dark-text text-white py-16 mt-auto">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Footer Content Grid -->
+            <div class="grid md:grid-cols-4 gap-12 border-b border-white/10 pb-10">
+                
+                <!-- Col 1: Logo & Mission -->
+                <div class="space-y-6">
+                    <div class="text-3xl font-museo font-bold text-primary-teal">Solviant</div>
+                    <p class="text-sm text-white/70">Transforming business operations through intelligent automation and data-driven insights.</p>
+                    <div class="flex space-x-4">
+                        <!-- Social Icons -->
+                        <a href="#" class="p-2 rounded-full bg-white/10 hover:bg-primary-teal transition"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="#" class="p-2 rounded-full bg-white/10 hover:bg-primary-teal transition"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="#" class="p-2 rounded-full bg-white/10 hover:bg-primary-teal transition"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-white/70">
+                        <li><a href="index.html#home" class="hover:text-primary-teal transition">Home</a></li>
+                        <li><a href="index.html#about" class="hover:text-primary-teal transition">About</a></li>
+                        <li><a href="index.html#services" class="hover:text-primary-teal transition">Services</a></li>
+                        <li><a href="#" class="text-primary-teal font-medium">Blog</a></li>
+                        <li><a href="index.html#team" class="hover:text-primary-teal transition">Our Team</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Get in Touch -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Get in Touch</h4>
+                    <ul class="space-y-4 text-sm text-white/70">
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="mail" class="w-5 h-5 text-primary-teal"></i>
+                            <a href="mailto:ContactUs@solviant.com" class="hover:text-primary-teal transition">ContactUs@solviant.com</a>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <i data-lucide="phone" class="w-5 h-5 text-primary-teal"></i>
+                            <a href="tel:+31641506636" class="hover:text-primary-teal transition">+31 (0) 641506636</a>
+                        </li>
+                    </ul>
+                </div>
+
+                 <!-- Col 4: Additional Info (Placeholder) -->
+                 <div>
+                    <h4 class="text-lg font-semibold mb-6">Locations</h4>
+                    <p class="text-sm text-white/70">Amsterdam, NL<br>London, UK</p>
+                    <div class="mt-4">
+                        <i data-lucide="map-pin" class="w-6 h-6 text-primary-teal"></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Copyright Row -->
+            <div class="mt-8 pt-4 flex flex-col md:flex-row justify-between items-center text-sm text-white/50">
+                <p>&copy; 2025 Solviant. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-primary-teal transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-primary-teal transition">Terms of Service</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Initialize Lucide icons -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
