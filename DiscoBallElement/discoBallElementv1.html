@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Disco Ball Loader</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #050011;
+            background-image: radial-gradient(circle at center, #1a0033 0%, #000000 100%);
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        #canvas-container {
+            position: relative;
+            box-shadow: 0 0 50px rgba(255, 0, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px #ff00de,
+                0 0 20px #ff00de,
+                0 0 40px #ff00de;
+            animation: pulse 0.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; text-shadow: 0 0 5px #fff, 0 0 10px #ff00de; }
+            100% { opacity: 1; text-shadow: 0 0 10px #fff, 0 0 20px #ff00de, 0 0 40px #00ffff; }
+        }
+
+        /* Scanline effect overlay */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container">
+        <canvas id="discoCanvas"></canvas>
+    </div>
+    <div class="loading-text" id="loadingText">Igniting Dancefloor... 0%</div>
+    <div class="overlay"></div>
+
+    <script>
+        const canvas = document.getElementById('discoCanvas');
+        const ctx = canvas.getContext('2d');
+        const loadingText = document.getElementById('loadingText');
+
+        // Configuration
+        const config = {
+            radius: 150,
+            tileSize: 12, // Size of mirror tiles
+            rotationSpeed: 0.04,
+            neonColors: [
+                '#FF00FF', // Magenta
+                '#00FFFF', // Cyan
+                '#CCFF00', // Lime
+                '#FF3300', // Red-Orange
+                '#BF00FF'  // Electric Purple
+            ],
+            baseColor: '#222', // Color of unlit tiles
+            fillDuration: 2000, // Time in ms to fill
+        };
+
+        let width, height;
+        let tiles = [];
+        let rotationAngle = 0;
+        let startTime = null;
+        let isFull = false;
+
+        // Resize handling
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            // Constrain canvas to a square box for the ball, but keep it responsive
+            const size = Math.min(width, height) * 0.8; 
+            canvas.width = 400; // Fixed internal resolution for consistent look
+            canvas.height = 400;
+            canvas.style.width = '400px';
+            canvas.style.height = '400px';
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Tile Class representing a mirror on the sphere
+        class Tile {
+            constructor(theta, phi) {
+                this.theta = theta; // Vertical angle (0 to PI)
+                this.phi = phi;     // Horizontal angle (0 to 2PI)
+                this.color = config.neonColors[Math.floor(Math.random() * config.neonColors.length)];
+                
+                // Random variation in "normal" for sparkle effect
+                this.sparkleOffset = Math.random() * 100;
+            }
+
+            // Project 3D sphere coordinate to 2D canvas
+            project(rotY, fillProgress) {
+                // Spherical to Cartesian
+                const r = config.radius;
+                let x = r * Math.sin(this.theta) * Math.cos(this.phi + rotY);
+                let y = r * Math.cos(this.theta);
+                let z = r * Math.sin(this.theta) * Math.sin(this.phi + rotY);
+
+                // Apply simple tilt (rotate around X axis slightly for better 3D view)
+                const tilt = 0.2;
+                let y_tilt = y * Math.cos(tilt) - z * Math.sin(tilt);
+                let z_tilt = y * Math.sin(tilt) + z * Math.cos(tilt);
+                y = y_tilt;
+                z = z_tilt;
+
+                // Perspective projection scale
+                const perspective = 500;
+                const scale = perspective / (perspective + z);
+                
+                // Screen coordinates (centered)
+                const sx = canvas.width / 2 + x * scale;
+                const sy = canvas.height / 2 + y * scale;
+                const size = config.tileSize * scale;
+
+                return { x: sx, y: sy, z: z, size: size, originY: y };
+            }
+        }
+
+        // Initialize Tiles
+        function initTiles() {
+            tiles = [];
+            const count = 30; // latitude bands
+            
+            for (let i = 0; i <= count; i++) {
+                const theta = (Math.PI * i) / count;
+                const sinTheta = Math.sin(theta);
+                
+                // Calculate number of tiles in this ring based on circumference
+                // Avoid division by zero at poles
+                const ringCircumference = 2 * Math.PI * config.radius * sinTheta;
+                const tilesInRing = Math.max(1, Math.floor(ringCircumference / config.tileSize));
+                
+                for (let j = 0; j < tilesInRing; j++) {
+                    const phi = (2 * Math.PI * j) / tilesInRing;
+                    tiles.push(new Tile(theta, phi));
+                }
+            }
+        }
+
+        initTiles();
+
+        function draw(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            
+            // Calculate Fill Progress (0 to 1)
+            let progress = Math.min(elapsed / config.fillDuration, 1);
+            
+            // Update Loading Text
+            const percent = Math.floor(progress * 100);
+            if (percent < 100) {
+                loadingText.innerText = `Charging Beats... ${percent}%`;
+            } else {
+                loadingText.innerText = "PARTY TIME!";
+                loadingText.style.color = "#00FFFF";
+                loadingText.style.textShadow = "0 0 20px #00FFFF";
+            }
+
+            // Clear Canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background Glow (Behind ball)
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const gradient = ctx.createRadialGradient(cx, cy, config.radius * 0.5, cx, cy, config.radius * 1.5);
+            gradient.addColorStop(0, `rgba(255, 0, 255, ${0.1 + progress * 0.2})`);
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Rotate
+            rotationAngle += config.rotationSpeed;
+
+            // Project all tiles
+            let projectedTiles = tiles.map(tile => {
+                const p = tile.project(rotationAngle, progress);
+                return { ...p, tile: tile };
+            });
+
+            // Sort by Z (painters algorithm - draw back to front)
+            projectedTiles.sort((a, b) => a.z - b.z);
+
+            // Determine Fill Height in World Space (-Radius to +Radius)
+            // We fill from bottom (positive Y in screen space usually, but mathematical Y is up)
+            // In our projection: y was r * cos(theta). Theta 0 is top (y=+r), Theta PI is bottom (y=-r).
+            // Actually in canvas Y increases downwards. 
+            // Let's define visual fill: "Filling up like a glass".
+            // Bottom of ball is max Y, Top is min Y.
+            const totalHeight = config.radius * 2;
+            const currentFillY = (config.radius) - (totalHeight * progress); 
+            // This threshold moves from +150 (bottom) to -150 (top)
+
+            // Draw Tiles
+            projectedTiles.forEach(pt => {
+                const isVisible = pt.z > -20; // Slight tolerance for edge tiles
+
+                if (isVisible) {
+                    ctx.beginPath();
+                    
+                    // Logic: Is this tile "filled"?
+                    // Compare tile's physical Y position to the fill level
+                    // Our Y axis: +Y is Down (Screen). 
+                    // Ball goes from -radius (Top) to +radius (Bottom).
+                    // We want to fill from Bottom (+radius) to Top (-radius).
+                    // So if tile.y > threshold, it is filled.
+                    
+                    const threshold = config.radius - (config.radius * 2 * progress);
+                    const isFilled = pt.originY > threshold;
+
+                    // Color calculation
+                    if (isFilled) {
+                        ctx.fillStyle = pt.tile.color;
+                        // Add glow effect for filled tiles
+                        ctx.shadowBlur = 15;
+                        ctx.shadowColor = pt.tile.color;
+                    } else {
+                        // Unfilled "Dark" mirror
+                        const shade = 30 + (pt.z / config.radius) * 20; // Depth shading
+                        ctx.fillStyle = `rgb(${shade}, ${shade}, ${shade})`;
+                        ctx.shadowBlur = 0;
+                    }
+
+                    // Draw Diamond/Rect shape
+                    // We draw a small square centered at x,y
+                    const s = pt.size;
+                    
+                    // Simple sparkle animation for filled tiles
+                    if (isFilled && Math.random() > 0.95) {
+                        ctx.fillStyle = "#FFFFFF";
+                        ctx.shadowBlur = 20;
+                        ctx.shadowColor = "#FFFFFF";
+                    }
+
+                    ctx.fillRect(pt.x - s/2, pt.y - s/2, s, s);
+                    
+                    // Reset shadow for performance
+                    ctx.shadowBlur = 0;
+                }
+            });
+
+            // Draw a "beam" at the top if full
+            if (progress >= 1) {
+                ctx.globalCompositeOperation = 'lighter';
+                ctx.beginPath();
+                ctx.moveTo(cx, cy - config.radius);
+                ctx.lineTo(cx - 100, -100);
+                ctx.lineTo(cx + 100, -100);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.fill();
+                ctx.globalCompositeOperation = 'source-over';
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        // Start animation
+        requestAnimationFrame(draw);
+
+    </script>
+</body>
+</html>
