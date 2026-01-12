@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinyl Interaction Nav</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Righteous&family=Inter:wght@400;600&display=swap');
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            user-select: none;
+        }
+
+        /* The main container in the bottom right */
+        #nav-wrapper {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 200px; /* Interaction area size */
+            height: 200px;
+            pointer-events: none; /* Let clicks pass through until we hit the buttons */
+            z-index: 50;
+        }
+
+        /* The Quarter Circle Trigger Button */
+        #trigger-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: #e94560;
+            border-top-left-radius: 100%;
+            cursor: pointer;
+            pointer-events: auto;
+            box-shadow: -4px -4px 15px rgba(233, 69, 96, 0.4);
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: 20px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 60;
+        }
+
+        #trigger-btn:hover {
+            background: #ff5e78;
+            width: 110px;
+            height: 110px;
+        }
+
+        #trigger-btn i {
+            font-size: 24px;
+            color: white;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        /* The Vinyl Record */
+        #vinyl-container {
+            position: absolute;
+            bottom: -150px; /* Initially hidden off-screen */
+            right: -150px;
+            width: 320px;
+            height: 320px;
+            pointer-events: auto;
+            transition: bottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), right 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 55;
+            /* Center the rotation anchor */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #vinyl-record {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            /* Vinyl Grooves Texture using repeating gradients */
+            background: 
+                radial-gradient(circle, #222 15%, transparent 16%),
+                radial-gradient(circle, #111 15%, #333 16%, #111 17%, #333 18%, #111 19%, #333 20%, #111 21%, #333 22%, #111 23%, #333 24%, #111 25%, #333 26%, #111 27%, #333 28%, #111 29%, #333 30%, #111 31%, #333 32%, #111 33%, #333 34%, #111 35%, #333 36%, #111 37%, #333 38%, #111 39%, #333 40%, #111 41%, #333 42%, #111 43%, #333 44%, #111 45%, #333 46%, #111 47%, #333 48%, #111 49%, #333 50%, #111 51%, #333 52%, #111 53%, #333 54%, #111 55%, #333 56%, #111 57%, #333 58%, #111 59%, #333 60%, #111 61%, #333 62%, #111 63%, #333 64%, #111 65%, #333 66%, #111 67%, #333 68%, #111 69%, #333 70%, #000 70%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            cursor: grab;
+            touch-action: none; /* Critical for dragging on mobile */
+        }
+
+        #vinyl-record:active {
+            cursor: grabbing;
+        }
+
+        /* The Center Label of the Record */
+        .record-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #f5af19, #f12711);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .record-hole {
+            width: 15px;
+            height: 15px;
+            background: #1a1a2e;
+            border-radius: 50%;
+        }
+
+        /* Menu Options on the Record */
+        .menu-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: left center; /* Pivot around the center of the record */
+            width: 50%; /* Length equals the radius */
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Push text to the outer edge */
+            padding-right: 35px; /* Keeps text inside the record edge */
+            padding-left: 50px; /* Ensures text doesn't overlap the center label */
+            pointer-events: none; 
+            box-sizing: border-box; 
+        }
+        
+        .menu-item-content {
+            background: transparent; 
+            border-radius: 0;
+            
+            /* Typography changes to look like printed track listing */
+            font-family: 'Righteous', cursive;
+            font-size: 13px;
+            font-weight: normal;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5); /* Faded silver text */
+            text-transform: uppercase;
+            
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            transition: all 0.2s;
+            pointer-events: auto; /* Re-enable clicks specifically for the button part */
+            cursor: pointer;
+        }
+
+        .menu-item-content:hover {
+            color: #e94560;
+            text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+            transform: scale(1.1);
+            background: transparent;
+        }
+
+        /* Active State (Open) */
+        .nav-open #vinyl-container {
+            bottom: 30px;
+            right: 30px;
+        }
+
+        .nav-open #trigger-btn i {
+            transform: rotate(45deg);
+        }
+        
+        /* Highlight specific for active styling */
+        .record-shine {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+    </style>
+</head>
+<body class="flex items-center justify-center">
+
+    <!-- Background Content / Placeholder -->
+    <div class="text-center p-8 max-w-2xl">
+        <h1 class="text-5xl font-['Righteous'] mb-4 text-[#e94560]">Spin to Navigate</h1>
+        <p class="text-gray-300 text-lg mb-8">Tap the corner. Drag the vinyl. Pick a track.</p>
+        <div class="inline-block p-4 border border-[#e94560] rounded-lg bg-opacity-20 bg-black backdrop-blur-md">
+            <p class="text-sm text-gray-400">Current Selection:</p>
+            <p id="selection-display" class="text-xl font-bold mt-1 text-white">None</p>
+        </div>
+    </div>
+
+    <!-- Navigation Container -->
+    <div id="nav-wrapper">
+        
+        <!-- The Vinyl Record Container -->
+        <div id="vinyl-container">
+            <div id="vinyl-record">
+                <!-- Decorative Shine -->
+                <div class="record-shine"></div>
+
+                <!-- Center Label -->
+                <div class="record-label">
+                    <div class="text-[8px] text-black font-bold absolute top-3 tracking-widest">SIDE A</div>
+                    <div class="record-hole"></div>
+                    <div class="text-[8px] text-black font-bold absolute bottom-3 tracking-widest">33 RPM</div>
+                </div>
+
+                <!-- Items will be injected here via JS -->
+            </div>
+        </div>
+
+        <!-- The Trigger Button (Quarter Circle) -->
+        <div id="trigger-btn">
+            <i class="fas fa-plus"></i>
+        </div>
+
+    </div>
+
+    <script>
+        // Data
+        const options = [
+            { id: 1, label: "Dashboard", icon: "fa-chart-line" },
+            { id: 2, label: "Profile", icon: "fa-user" },
+            { id: 3, label: "Settings", icon: "fa-cog" },
+            { id: 4, label: "Messages", icon: "fa-envelope" },
+            { id: 5, label: "Library", icon: "fa-book" },
+            { id: 6, label: "Favorites", icon: "fa-heart" },
+            { id: 7, label: "Cloud", icon: "fa-cloud" },
+            { id: 8, label: "Logout", icon: "fa-sign-out-alt" }
+        ];
+
+        // Elements
+        const wrapper = document.getElementById('nav-wrapper');
+        const triggerBtn = document.getElementById('trigger-btn');
+        const vinylContainer = document.getElementById('vinyl-container');
+        const vinylRecord = document.getElementById('vinyl-record');
+        const selectionDisplay = document.getElementById('selection-display');
+
+        // State
+        let isOpen = false;
+        let currentRotation = 0;
+        let isDragging = false;
+        let startAngle = 0;
+        let previousRotation = 0;
+
+        // Initialize Menu Items
+        function initMenu() {
+            const total = options.length;
+            
+            options.forEach((opt, index) => {
+                const angleDeg = (360 / total) * index;
+                const item = document.createElement('div');
+                item.className = 'menu-item';
+                
+                // Pivot from the center (left edge of the item)
+                item.style.transform = `translateY(-50%) rotate(${angleDeg}deg)`;
+                
+                // The actual clickable text
+                const content = document.createElement('div');
+                content.className = 'menu-item-content';
+                content.innerHTML = `<i class="fas ${opt.icon}"></i> ${opt.label}`;
+                content.onclick = (e) => {
+                    e.stopPropagation(); // Prevent drag start
+                    selectOption(opt.label);
+                };
+
+                // Add to item, item to record
+                item.appendChild(content);
+                vinylRecord.appendChild(item);
+            });
+        }
+
+        // Toggle Open/Close
+        triggerBtn.addEventListener('click', () => {
+            isOpen = !isOpen;
+            if (isOpen) {
+                wrapper.classList.add('nav-open');
+                triggerBtn.querySelector('i').classList.remove('fa-plus');
+                triggerBtn.querySelector('i').classList.add('fa-times');
+            } else {
+                wrapper.classList.remove('nav-open');
+                triggerBtn.querySelector('i').classList.add('fa-plus');
+                triggerBtn.querySelector('i').classList.remove('fa-times');
+            }
+        });
+
+        // Selection Logic
+        function selectOption(label) {
+            selectionDisplay.textContent = label;
+            
+            // Animation for selection feedback
+            selectionDisplay.style.transform = "scale(1.5)";
+            selectionDisplay.style.color = "#e94560";
+            setTimeout(() => {
+                selectionDisplay.style.transform = "scale(1)";
+                selectionDisplay.style.color = "white";
+            }, 300);
+        }
+
+        // --- Drag / Rotate Logic ---
+
+        function getAngle(x, y, cx, cy) {
+            return Math.atan2(y - cy, x - cx) * (180 / Math.PI);
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            const event = e.touches ? e.touches[0] : e;
+            const rect = vinylRecord.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            startAngle = getAngle(event.clientX, event.clientY, centerX, centerY);
+            vinylRecord.style.transition = 'none'; // Disable transition for instant drag response
+        }
+
+        function moveDrag(e) {
+            if (!isDragging) return;
+            e.preventDefault(); // Prevent scrolling on touch
+            
+            const event = e.touches ? e.touches[0] : e;
+            const rect = vinylRecord.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const currentAngle = getAngle(event.clientX, event.clientY, centerX, centerY);
+            const delta = currentAngle - startAngle;
+            
+            currentRotation = previousRotation + delta;
+            vinylRecord.style.transform = `rotate(${currentRotation}deg)`;
+        }
+
+        function endDrag() {
+            if (!isDragging) return;
+            isDragging = false;
+            previousRotation = currentRotation;
+            vinylRecord.style.transition = 'transform 0.5s ease-out'; // Re-enable smoothing for momentum/snapping if we added it
+        }
+
+        // Mouse Events
+        vinylRecord.addEventListener('mousedown', startDrag);
+        window.addEventListener('mousemove', moveDrag);
+        window.addEventListener('mouseup', endDrag);
+
+        // Touch Events
+        vinylRecord.addEventListener('touchstart', startDrag, { passive: false });
+        window.addEventListener('touchmove', moveDrag, { passive: false });
+        window.addEventListener('touchend', endDrag);
+
+        // Init
+        initMenu();
+
+    </script>
+</body>
+</html>
