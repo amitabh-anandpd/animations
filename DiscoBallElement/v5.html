@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Disco Ball Loader</title>
+    <!-- Import Monoton for that disco feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #111; 
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            transition: filter 1s ease;
+        }
+
+        body.grayscale-mode {
+            filter: grayscale(100%) contrast(1.2);
+            background-color: #050505;
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .loading-text {
+            position: relative;
+            z-index: 20;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #ff00de;
+            margin-top: 350px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        
+        body:not(.grayscale-mode) .loading-text {
+            opacity: 1;
+            animation: pulse 0.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; text-shadow: 0 0 5px #fff, 0 0 10px #ff00de; }
+            100% { opacity: 1; text-shadow: 0 0 10px #fff, 0 0 20px #ff00de, 0 0 40px #00ffff; }
+        }
+
+        /* Redesigned Enter Button */
+        #enter-btn {
+            position: absolute;
+            z-index: 50;
+            background: linear-gradient(135deg, #ff00de, #00ffff);
+            color: #fff;
+            border: none;
+            padding: 10px 40px;
+            font-family: 'Monoton', cursive; /* Disco font */
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            border-radius: 50px; /* Rounded pill shape */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 222, 0.5);
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+        }
+
+        #enter-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+        }
+
+        #enter-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Scanline effect overlay */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 30;
+        }
+    </style>
+</head>
+<body class="grayscale-mode">
+
+    <div id="canvas-container">
+        <canvas id="discoCanvas"></canvas>
+    </div>
+    
+    <button id="enter-btn">ENTER</button>
+    <div class="loading-text" id="loadingText">Igniting Dancefloor... 0%</div>
+    <div class="overlay"></div>
+
+    <script>
+        const canvas = document.getElementById('discoCanvas');
+        const ctx = canvas.getContext('2d');
+        const loadingText = document.getElementById('loadingText');
+        const enterBtn = document.getElementById('enter-btn');
+        const body = document.body;
+
+        // State
+        let isStarted = false;
+        let startTime = null;
+        let width, height;
+        
+        // Animation Phases
+        let phase = 'idle'; // idle, filling, swelling, exploded
+
+        // Configuration
+        const config = {
+            baseRadius: 150, 
+            radius: 150, // dynamic
+            tileSize: 12,
+            rotationSpeed: 0.04,
+            neonColors: [
+                '#FF00FF', // Magenta
+                '#00FFFF', // Cyan
+                '#CCFF00', // Lime
+                '#FF3300', // Red-Orange
+                '#BF00FF'  // Electric Purple
+            ],
+            fillDuration: 3000,
+            swellDuration: 1000,
+        };
+
+        // Resize handling
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            
+            config.baseRadius = Math.min(width, height) * 0.2;
+            config.baseRadius = Math.max(100, Math.min(config.baseRadius, 250));
+            
+            // Only update radius if not expanding
+            if (phase === 'idle' || phase === 'filling') {
+                config.radius = config.baseRadius;
+            }
+            
+            loadingText.style.marginTop = `${config.baseRadius * 2 + 50}px`;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // --- ASSETS ---
+        let tiles = [];
+        let particles = []; // Confetti
+        let explosionParticles = []; // Exploded tiles
+        let neonShapes = [];
+        let rotationAngle = 0;
+
+        // Init Particles (Confetti)
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 80; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    speed: 1 + Math.random() * 3,
+                    size: 2 + Math.random() * 4,
+                    color: config.neonColors[Math.floor(Math.random() * config.neonColors.length)],
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        // Init Neon Background Shapes
+        function initNeonShapes() {
+            neonShapes = [];
+            for(let i=0; i<6; i++) {
+                neonShapes.push({
+                    x: (Math.random() * width * 0.8) + (width * 0.1),
+                    y: (Math.random() * height * 0.6) + (height * 0.1),
+                    type: Math.random() > 0.5 ? 'triangle' : 'zigzag',
+                    color: config.neonColors[Math.floor(Math.random() * config.neonColors.length)],
+                    scale: 0.5 + Math.random() * 0.5,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotationSpeed: (Math.random() - 0.5) * 0.02
+                });
+            }
+        }
+
+        // Init Disco Ball Tiles
+        class Tile {
+            constructor(theta, phi) {
+                this.theta = theta; 
+                this.phi = phi;     
+                this.color = config.neonColors[Math.floor(Math.random() * config.neonColors.length)];
+                this.sparkleOffset = Math.random();
+            }
+            
+            // Project 3D sphere coordinate to 2D canvas
+            project(rotY, cx, cy, currentRadius) {
+                const r = currentRadius;
+                let x = r * Math.sin(this.theta) * Math.cos(this.phi + rotY);
+                let y = r * Math.cos(this.theta);
+                let z = r * Math.sin(this.theta) * Math.sin(this.phi + rotY);
+
+                const tilt = 0.2;
+                let y_tilt = y * Math.cos(tilt) - z * Math.sin(tilt);
+                let z_tilt = y * Math.sin(tilt) + z * Math.cos(tilt);
+                y = y_tilt;
+                z = z_tilt;
+
+                const perspective = 600;
+                const scale = perspective / (perspective + z);
+                
+                const sx = cx + x * scale;
+                const sy = cy + y * scale;
+                const size = (config.tileSize * (config.baseRadius/150)) * scale; 
+
+                // Return both screen coords (sx, sy) and 3D coords (x,y,z) for explosion calc
+                return { x: sx, y: sy, z: z, size: size, originY: y, worldX: x, worldY: y, worldZ: z };
+            }
+        }
+
+        function initTiles() {
+            tiles = [];
+            const count = 30; 
+            for (let i = 0; i <= count; i++) {
+                const theta = (Math.PI * i) / count;
+                const sinTheta = Math.sin(theta);
+                const ringCircumference = 2 * Math.PI * config.baseRadius * sinTheta;
+                const tilesInRing = Math.max(1, Math.floor(ringCircumference / config.tileSize));
+                
+                for (let j = 0; j < tilesInRing; j++) {
+                    const phi = (2 * Math.PI * j) / tilesInRing;
+                    tiles.push(new Tile(theta, phi));
+                }
+            }
+        }
+
+        // Initialization
+        initTiles();
+        initParticles();
+        initNeonShapes();
+
+        // Button Click Handler
+        enterBtn.addEventListener('click', () => {
+            enterBtn.style.opacity = '0';
+            setTimeout(() => enterBtn.remove(), 500); // Remove from DOM after fade
+            
+            body.classList.remove('grayscale-mode');
+            isStarted = true;
+            phase = 'filling';
+            startTime = performance.now();
+        });
+
+        // --- DRAWING FUNCTIONS ---
+
+        function drawSpotlights(ctx, cx, cy, progress, timestamp) {
+            if (progress <= 0.1) return;
+            
+            let entrance = Math.min(1, Math.max(0, (progress - 0.1) / 0.2));
+            entrance = entrance * (2 - entrance); 
+
+            // Left Spot
+            const leftX = cx - config.baseRadius * 2.5;
+            const leftY = -50 + (150 * entrance); 
+
+            // Right Spot
+            const rightX = cx + config.baseRadius * 2.5;
+            const rightY = -50 + (150 * entrance);
+
+            const alpha = Math.min(1, (progress - 0.1) * 2);
+
+            // Fixture drawing helper
+            const drawFixture = (x, y, angle) => {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+                ctx.fillStyle = '#333';
+                ctx.strokeStyle = '#555';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(-20, -10); ctx.lineTo(-20, 10); ctx.lineTo(20, 10); ctx.lineTo(20, -10); ctx.stroke();
+                ctx.beginPath(); ctx.ellipse(0, 0, 15, 20, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#fff'; ctx.shadowColor = '#fff'; ctx.shadowBlur = 10;
+                ctx.beginPath(); ctx.ellipse(0, 15, 10, 5, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.restore();
+            };
+
+            // 1. Draw Left Beam
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            ctx.translate(leftX, leftY);
+            const angle1 = 0.5 + Math.sin(timestamp * 0.001) * 0.2; 
+            ctx.rotate(angle1);
+            const grad1 = ctx.createLinearGradient(0, 0, 0, height);
+            grad1.addColorStop(0, `rgba(0, 255, 255, ${0.4 * alpha})`);
+            grad1.addColorStop(1, 'rgba(0, 255, 255, 0)');
+            ctx.beginPath(); ctx.moveTo(-15, 0); ctx.lineTo(15, 0); ctx.lineTo(150, height * 1.5); ctx.lineTo(-150, height * 1.5); ctx.fill();
+            ctx.restore();
+            drawFixture(leftX, leftY, angle1);
+
+            // 2. Draw Right Beam
+            ctx.save();
+            ctx.globalCompositeOperation = 'screen';
+            ctx.translate(rightX, rightY);
+            const angle2 = -0.5 + Math.sin(timestamp * 0.0015) * 0.2;
+            ctx.rotate(angle2);
+            const grad2 = ctx.createLinearGradient(0, 0, 0, height);
+            grad2.addColorStop(0, `rgba(255, 0, 255, ${0.4 * alpha})`);
+            grad2.addColorStop(1, 'rgba(255, 0, 255, 0)');
+            ctx.beginPath(); ctx.moveTo(-15, 0); ctx.lineTo(15, 0); ctx.lineTo(150, height * 1.5); ctx.lineTo(-150, height * 1.5); ctx.fill();
+            ctx.restore();
+            drawFixture(rightX, rightY, angle2);
+            
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+        function triggerExplosion(cx, cy) {
+            phase = 'exploded';
+            explosionParticles = [];
+            
+            // Convert current tiles to free particles
+            // We need to calculate their LAST position exactly
+            tiles.forEach(tile => {
+                // Re-calculate projection one last time to get world position with current rotation
+                const r = config.radius;
+                const rotY = rotationAngle;
+                
+                // 3D calculation matches Tile.project
+                let x = r * Math.sin(tile.theta) * Math.cos(tile.phi + rotY);
+                let y = r * Math.cos(tile.theta);
+                let z = r * Math.sin(tile.theta) * Math.sin(tile.phi + rotY);
+                
+                // Apply tilt
+                const tilt = 0.2;
+                let y_tilt = y * Math.cos(tilt) - z * Math.sin(tilt);
+                let z_tilt = y * Math.sin(tilt) + z * Math.cos(tilt);
+                
+                // Velocity vector: normalized position * speed
+                // Normalize
+                const len = Math.sqrt(x*x + y_tilt*y_tilt + z_tilt*z_tilt);
+                const speed = 5 + Math.random() * 15;
+                
+                explosionParticles.push({
+                    x: x, 
+                    y: y_tilt, 
+                    z: z_tilt,
+                    vx: (x / len) * speed,
+                    vy: (y_tilt / len) * speed,
+                    vz: (z_tilt / len) * speed,
+                    color: tile.color,
+                    size: config.tileSize * (config.radius/150),
+                    rotSpeed: (Math.random() - 0.5) * 0.2
+                });
+            });
+            
+            // Hide text
+            loadingText.style.opacity = '0';
+        }
+
+        function drawExplosion(ctx, cx, cy) {
+            // Sort for depth
+            explosionParticles.sort((a, b) => b.z - a.z); // Draw far first (positive Z is far in our projection logic check... wait. In projection: scale = p / (p+z). Positive Z is farther away? No usually positive Z is towards camera in standard OpenGL, but here: z = r * sin * sin. If we look at projection logic: scale = 600 / (600 + z). If z is positive, scale < 1 (Smaller, Farther). So Positive Z is INTO screen. Painter's algo: Draw largest Z first.)
+            
+            explosionParticles.forEach(p => {
+                // Update position
+                p.x += p.vx;
+                p.y += p.vy;
+                p.z += p.vz;
+                
+                // Add gravity? Nah, zero gravity explosion looks cooler
+                
+                // Project
+                const perspective = 600;
+                // Clip if behind camera
+                if (p.z < -perspective + 10) return;
+
+                const scale = perspective / (perspective + p.z);
+                const sx = cx + p.x * scale;
+                const sy = cy + p.y * scale;
+                const size = p.size * scale;
+                
+                ctx.fillStyle = p.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = p.color;
+                
+                ctx.beginPath();
+                ctx.fillRect(sx - size/2, sy - size/2, size, size);
+                ctx.fill();
+            });
+            ctx.shadowBlur = 0;
+        }
+
+        function draw(timestamp) {
+            let progress = 0;
+            let swellProgress = 0;
+
+            if (isStarted) {
+                const elapsed = timestamp - startTime;
+                
+                if (phase === 'filling') {
+                    progress = Math.min(elapsed / config.fillDuration, 1);
+                    if (progress >= 1) {
+                        phase = 'swelling';
+                        startTime = timestamp; // Reset time for next phase
+                    }
+                } else if (phase === 'swelling') {
+                    progress = 1; // Full fill
+                    swellProgress = Math.min(elapsed / config.swellDuration, 1);
+                    
+                    // Easing for swell: BackIn
+                    const s = 1.70158;
+                    const ease = swellProgress * swellProgress * ((s + 1) * swellProgress - s);
+                    
+                    config.radius = config.baseRadius * (1 + ease * 0.8); // Grow 80%
+                    
+                    if (swellProgress >= 1) {
+                        triggerExplosion(width/2, height/2);
+                    }
+                }
+            }
+            
+            // Clean Canvas
+            ctx.fillStyle = (phase === 'idle' || !isStarted) ? '#050505' : '#050011'; 
+            ctx.fillRect(0, 0, width, height);
+
+            const cx = width / 2;
+            const cy = height / 2;
+
+            // --- 1. Background Elements ---
+            if (isStarted && phase !== 'exploded') {
+                const bgGrad = ctx.createRadialGradient(cx, cy, config.radius * 0.5, cx, cy, config.radius * 4);
+                bgGrad.addColorStop(0, `rgba(26, 0, 51, ${0.5 + progress * 0.5})`);
+                bgGrad.addColorStop(1, '#050011');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, width, height);
+
+                // Draw background decorations
+                const decoAlpha = phase === 'swelling' ? 1 - swellProgress : Math.min(1, (progress - 0.25) * 3);
+                
+                if (phase !== 'swelling') {
+                     // Neon Shapes
+                    ctx.save();
+                    ctx.globalAlpha = decoAlpha;
+                    neonShapes.forEach((shape) => {
+                        ctx.save();
+                        ctx.translate(shape.x, shape.y);
+                        shape.rotation += shape.rotationSpeed;
+                        ctx.rotate(shape.rotation);
+                        ctx.scale(shape.scale, shape.scale);
+                        ctx.strokeStyle = shape.color;
+                        ctx.lineWidth = 3;
+                        ctx.shadowColor = shape.color;
+                        ctx.shadowBlur = 15;
+                        ctx.beginPath();
+                        if (shape.type === 'triangle') {
+                            ctx.moveTo(0, -30); ctx.lineTo(26, 15); ctx.lineTo(-26, 15); ctx.closePath();
+                        } else {
+                            ctx.moveTo(-30, -20); ctx.lineTo(-10, 20); ctx.lineTo(10, -20); ctx.lineTo(30, 20);
+                        }
+                        ctx.stroke();
+                        ctx.restore();
+                    });
+                    ctx.restore();
+                    
+                    drawSpotlights(ctx, cx, cy, progress, timestamp);
+                    
+                    // Floor Grid
+                    if (progress > 0.2) {
+                        const alpha = Math.min(1, (progress - 0.2) * 2);
+                        const horizonY = cy + config.radius + 100;
+                        if (horizonY < height) {
+                            ctx.save();
+                            ctx.strokeStyle = `rgba(200, 0, 255, ${0.3 * alpha})`;
+                            ctx.lineWidth = 2;
+                            ctx.shadowBlur = 10; ctx.shadowColor = '#FF00FF';
+                            for (let i = -width; i < width * 2; i += 100) {
+                                ctx.beginPath(); ctx.moveTo(i, height); 
+                                const factor = (i - cx) * 0.2; ctx.lineTo(cx + factor, horizonY); ctx.stroke();
+                            }
+                            for (let j = 0; j < (height - horizonY); j+= 30) {
+                                const y = height - j - (j*j)/1200;
+                                if (y < horizonY) continue;
+                                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+                            }
+                            ctx.restore();
+                        }
+                    }
+
+                    // Confetti
+                    if (progress > 0.4) {
+                        const alpha = Math.min(1, (progress - 0.4) * 2);
+                        particles.forEach(p => {
+                            p.y -= p.speed;
+                            if (p.y < -10) p.y = height + 10;
+                            const x = p.x + Math.sin(timestamp * 0.002 + p.phase) * 20;
+                            ctx.fillStyle = p.color;
+                            ctx.globalAlpha = alpha;
+                            ctx.beginPath(); ctx.rect(x, p.y, p.size, p.size); ctx.fill();
+                            ctx.globalAlpha = 1.0;
+                        });
+                    }
+                }
+                
+                // Text Update
+                if (phase === 'filling') {
+                    const percent = Math.floor(progress * 100);
+                    loadingText.innerText = `Charging Beats... ${percent}%`;
+                } else if (phase === 'swelling') {
+                    loadingText.innerText = "OVERLOAD!";
+                    loadingText.style.color = "#FF0000";
+                    loadingText.style.textShadow = `0 0 ${20 + swellProgress * 50}px #FF0000`;
+                    // Shake effect
+                    const shake = Math.random() * 10 * swellProgress;
+                    loadingText.style.transform = `translate(${shake}px, ${shake}px)`;
+                }
+            } else if (phase === 'idle') {
+                loadingText.innerText = "";
+            }
+
+            // --- 2. Disco Ball or Explosion ---
+            
+            if (phase === 'exploded') {
+                drawExplosion(ctx, cx, cy);
+            } else {
+                // Normal Rotation
+                rotationAngle += config.rotationSpeed;
+                // Spin faster during swell
+                if (phase === 'swelling') rotationAngle += swellProgress * 0.1;
+
+                let projectedTiles = tiles.map(tile => {
+                    const p = tile.project(rotationAngle, cx, cy, config.radius);
+                    return { ...p, tile: tile };
+                });
+
+                projectedTiles.sort((a, b) => a.z - b.z);
+
+                const threshold = (phase === 'idle') ? config.radius : (config.radius - (config.radius * 2 * progress));
+
+                projectedTiles.forEach(pt => {
+                    const isVisible = pt.z > -config.radius * 0.5;
+
+                    if (isVisible) {
+                        ctx.beginPath();
+                        const isFilled = (phase !== 'idle') && (pt.originY > threshold);
+
+                        if (isFilled) {
+                            ctx.fillStyle = pt.tile.color;
+                            ctx.shadowBlur = 10;
+                            ctx.shadowColor = pt.tile.color;
+                        } else {
+                            // Idle/Unfilled state
+                            const shade = 30 + (pt.z / config.radius) * 20; 
+                            ctx.fillStyle = `rgb(${shade}, ${shade}, ${shade})`;
+                            ctx.shadowBlur = 0;
+                        }
+
+                        // Brighten up in Swell phase
+                        if (phase === 'swelling') {
+                            ctx.shadowBlur = 20 + swellProgress * 30;
+                            ctx.fillStyle = '#fff'; // Turn white before explosion
+                        }
+
+                        const s = pt.size;
+                        if (isFilled && Math.random() > 0.95 && phase !== 'swelling') {
+                            ctx.fillStyle = "#FFFFFF";
+                            ctx.shadowBlur = 20; ctx.shadowColor = "#FFFFFF";
+                        }
+
+                        ctx.fillRect(pt.x - s/2, pt.y - s/2, s+0.5, s+0.5);
+                        ctx.shadowBlur = 0;
+                    }
+                });
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        requestAnimationFrame(draw);
+
+    </script>
+</body>
+</html>
