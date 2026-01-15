@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vinyl Interaction Nav</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Righteous&family=Inter:wght@400;600&display=swap');
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            user-select: none;
+        }
+
+        /* Wrapper covers screen but allows click-through */
+        #nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* The Vinyl Record Container */
+        #vinyl-container {
+            position: absolute;
+            top: 50%;
+            /* Hidden: Right edge is 90vh outside screen (Full width is 90vh) */
+            right: -90vh; 
+            transform: translateY(-50%);
+            
+            /* Diameter based on viewport height */
+            width: 90vh; 
+            height: 90vh;
+            
+            pointer-events: auto;
+            transition: right 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            z-index: 55;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #vinyl-record {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            /* Realistic Vinyl Texture */
+            background: 
+                radial-gradient(circle, #222 15%, transparent 16%),
+                radial-gradient(circle, #111 15%, #333 16%, #111 17%, #333 18%, #111 19%, #333 20%, #111 21%, #333 22%, #111 23%, #333 24%, #111 25%, #333 26%, #111 27%, #333 28%, #111 29%, #333 30%, #111 31%, #333 32%, #111 33%, #333 34%, #111 35%, #333 36%, #111 37%, #333 38%, #111 39%, #333 40%, #111 41%, #333 42%, #111 43%, #333 44%, #111 45%, #333 46%, #111 47%, #333 48%, #111 49%, #333 50%, #111 51%, #333 52%, #111 53%, #333 54%, #111 55%, #333 56%, #111 57%, #333 58%, #111 59%, #333 60%, #111 61%, #333 62%, #111 63%, #333 64%, #111 65%, #333 66%, #111 67%, #333 68%, #111 69%, #333 70%, #000 70%);
+            box-shadow: -10px 0 50px rgba(0,0,0,0.6);
+            position: relative;
+            cursor: grab;
+            touch-action: none;
+        }
+
+        #vinyl-record:active {
+            cursor: grabbing;
+        }
+
+        /* The Center Label */
+        .record-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30%; 
+            height: 30%;
+            /* Matches the button gradient */
+            background: linear-gradient(135deg, #f5af19, #f12711);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .record-hole {
+            width: 5%;
+            height: 5%;
+            background: #1a1a2e;
+            border-radius: 50%;
+        }
+
+        /* Menu Options */
+        .menu-item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: left center;
+            width: 50%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12%; 
+            padding-left: 15%;
+            pointer-events: none; 
+            box-sizing: border-box; 
+        }
+        
+        .menu-item-content {
+            background: transparent;
+            font-family: 'Righteous', cursive;
+            font-size: 2.5vh; 
+            font-weight: normal;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.45);
+            text-transform: uppercase;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 1.5vh;
+            border: none;
+            transition: all 0.2s;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .menu-item-content:hover {
+            color: #e94560;
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.6);
+            transform: scale(1.05);
+        }
+
+        /* Circular Toggle Button */
+        #trigger-btn {
+            position: absolute;
+            top: 50%;
+            /* Half hidden off screen */
+            right: -30px; 
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            /* Blends with record label */
+            background: linear-gradient(135deg, #f5af19, #f12711);
+            color: white;
+            cursor: pointer;
+            pointer-events: auto;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            /* Justify start pushes the icon to the left, visible side */
+            justify-content: flex-start; 
+            padding-left: 12px;
+            font-size: 20px;
+            z-index: 60;
+            /* Removed 'right' transition as it stays stationary */
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        #trigger-btn:hover {
+            /* Slight nudge to encourage clicking */
+            transform: translateY(-50%) translateX(-5px);
+        }
+
+        /* Icon rotation transition */
+        #trigger-btn i {
+            transition: transform 0.5s ease;
+        }
+
+        /* Active State (Open) */
+        
+        /* Record Slide Logic:
+           Initial: right: -90vh (Right edge is 90vh away from screen right. Left edge is at 0? No, width is 90vh. 
+                   If right is -90vh, left is at viewport width. Invisible.)
+           
+           Target: We want Center of record to be at viewport right (0).
+           Center is 45vh from right edge of record.
+           So Right Edge of record needs to be at -45vh.
+           -45vh (edge position) + 45vh (radius) = 0 (center position).
+        */
+        .nav-open #vinyl-container {
+            right: -45vh; 
+        }
+
+        /* Button does not move position, but icon rotates */
+        .nav-open #trigger-btn i {
+            transform: rotate(180deg);
+        }
+        
+        .record-shine {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%;
+            background: linear-gradient(60deg, transparent 40%, rgba(255,255,255,0.07) 50%, transparent 60%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+    </style>
+</head>
+<body class="flex items-center justify-center">
+
+    <!-- Content Placeholder -->
+    <div class="text-left p-12 max-w-xl absolute left-20">
+        <h1 class="text-6xl font-['Righteous'] mb-6 text-white leading-tight">
+            Sonic <br><span class="text-[#e94560]">Navigation</span>
+        </h1>
+        <p class="text-gray-400 text-xl mb-10 max-w-md">
+            A redefined web experience. Click the arrow to slide out the console.
+        </p>
+        <div class="flex gap-4">
+            <div id="selection-display" class="px-6 py-3 border border-white/20 rounded-full text-white font-mono text-sm tracking-wider bg-white/5 backdrop-blur-sm">
+                WAITING FOR INPUT...
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Container -->
+    <div id="nav-wrapper">
+        
+        <!-- The Vinyl Record -->
+        <div id="vinyl-container">
+            <div id="vinyl-record">
+                <div class="record-shine"></div>
+
+                <div class="record-label">
+                    <div class="text-[1.5vh] text-black font-bold absolute top-[15%] tracking-widest opacity-70">SIDE A</div>
+                    <div class="record-hole"></div>
+                    <div class="text-[1.5vh] text-black font-bold absolute bottom-[15%] tracking-widest opacity-70">STEREO</div>
+                </div>
+
+                <!-- Items injected via JS -->
+            </div>
+        </div>
+
+        <!-- The Circular Toggle Button -->
+        <div id="trigger-btn">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+
+    </div>
+
+    <script>
+        // Data
+        const options = [
+            { id: 1, label: "Dashboard", icon: "fa-chart-line" },
+            { id: 2, label: "Profile", icon: "fa-user" },
+            { id: 3, label: "Settings", icon: "fa-cog" },
+            { id: 4, label: "Messages", icon: "fa-envelope" },
+            { id: 5, label: "Library", icon: "fa-book" },
+            { id: 6, label: "Favorites", icon: "fa-heart" },
+            { id: 7, label: "Cloud", icon: "fa-cloud" },
+            { id: 8, label: "Logout", icon: "fa-sign-out-alt" }
+        ];
+
+        // Elements
+        const wrapper = document.getElementById('nav-wrapper');
+        const triggerBtn = document.getElementById('trigger-btn');
+        const vinylRecord = document.getElementById('vinyl-record');
+        const selectionDisplay = document.getElementById('selection-display');
+
+        // State
+        let isOpen = false;
+        let currentRotation = 0;
+        let isDragging = false;
+        let startAngle = 0;
+        let previousRotation = 0;
+
+        // Initialize Menu Items
+        function initMenu() {
+            const total = options.length;
+            
+            options.forEach((opt, index) => {
+                const angleDeg = (360 / total) * index;
+                const item = document.createElement('div');
+                item.className = 'menu-item';
+                
+                // Pivot from center
+                item.style.transform = `translateY(-50%) rotate(${angleDeg}deg)`;
+                
+                const content = document.createElement('div');
+                content.className = 'menu-item-content';
+                content.innerHTML = `<i class="fas ${opt.icon}"></i> ${opt.label}`;
+                content.onclick = (e) => {
+                    e.stopPropagation(); 
+                    selectOption(opt.label);
+                };
+
+                item.appendChild(content);
+                vinylRecord.appendChild(item);
+            });
+        }
+
+        // Toggle Open/Close
+        triggerBtn.addEventListener('click', () => {
+            isOpen = !isOpen;
+            if (isOpen) {
+                wrapper.classList.add('nav-open');
+                // Icon rotation handled in CSS
+            } else {
+                wrapper.classList.remove('nav-open');
+            }
+        });
+
+        // Selection Logic
+        function selectOption(label) {
+            selectionDisplay.textContent = `SELECTED: ${label.toUpperCase()}`;
+            selectionDisplay.style.borderColor = "#e94560";
+            selectionDisplay.style.color = "#e94560";
+            
+            setTimeout(() => {
+                selectionDisplay.style.borderColor = "rgba(255,255,255,0.2)";
+                selectionDisplay.style.color = "white";
+            }, 500);
+        }
+
+        // --- Drag / Rotate Logic ---
+
+        function getAngle(x, y, cx, cy) {
+            return Math.atan2(y - cy, x - cx) * (180 / Math.PI);
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            const event = e.touches ? e.touches[0] : e;
+            const rect = vinylRecord.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            startAngle = getAngle(event.clientX, event.clientY, centerX, centerY);
+            vinylRecord.style.transition = 'none'; 
+        }
+
+        function moveDrag(e) {
+            if (!isDragging) return;
+            e.preventDefault(); 
+            
+            const event = e.touches ? e.touches[0] : e;
+            const rect = vinylRecord.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const currentAngle = getAngle(event.clientX, event.clientY, centerX, centerY);
+            const delta = currentAngle - startAngle;
+            
+            currentRotation = previousRotation + delta;
+            vinylRecord.style.transform = `rotate(${currentRotation}deg)`;
+        }
+
+        function endDrag() {
+            if (!isDragging) return;
+            isDragging = false;
+            previousRotation = currentRotation;
+            vinylRecord.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+        }
+
+        // Mouse Events
+        vinylRecord.addEventListener('mousedown', startDrag);
+        window.addEventListener('mousemove', moveDrag);
+        window.addEventListener('mouseup', endDrag);
+
+        // Touch Events
+        vinylRecord.addEventListener('touchstart', startDrag, { passive: false });
+        window.addEventListener('touchmove', moveDrag, { passive: false });
+        window.addEventListener('touchend', endDrag);
+
+        // Init
+        initMenu();
+
+    </script>
+</body>
+</html>
